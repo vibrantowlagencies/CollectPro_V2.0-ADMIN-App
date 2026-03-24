@@ -384,15 +384,8 @@ const STATUS_LABELS = {
   COOLING:'Cooling',COOLING_POOL:'Cooling Pool',
 };
 
-const COLUMN_MAP = {
-  accountNo: ['account no','accountno','account_no','account number','acct no'],
-  name:      ['name','customer name','customername','customer_name'],
-  mobile:    ['mobile','mobile no','mobileno','mobile_no','phone','contact'],
-  address:   ['address','full address','addr'],
-  area:      ['area','locality','zone'],
-  fxCode:    ['fx code','fx_code','fxcode','fx name','fx_name','area code'],
-  srNumber:  ['sr number','sr_number','srnumber','sr no'],
-};
+// COLUMN_MAP removed in v3.1
+// Backend owns all column normalization — see 03_BaseProcessor.gs _ACT_COL_MAP
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 //  📁 lib/api.js
@@ -450,6 +443,9 @@ const Utils = {
 //  📁 lib/xlsxParser.js
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function parseExcel(file) {
+  // ── v3.1: Send raw rows with original headers to backend.
+  // Backend owns ALL column normalization via _normalizeHeaders().
+  // No frontend column mapping — works with any ACT Excel format.
   return new Promise((res, rej) => {
     const rd = new FileReader();
     rd.onload = (e) => {
@@ -457,14 +453,8 @@ function parseExcel(file) {
         const wb  = XLSX.read(new Uint8Array(e.target.result), { type:'array' });
         const raw = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { defval:'' });
         if (!raw.length) { rej(new Error('File is empty')); return; }
-        const findCol = (variants) => Object.keys(raw[0]).find(h => variants.includes(h.toLowerCase().trim()));
-        const cm = {};
-        Object.entries(COLUMN_MAP).forEach(([f,v]) => { const c=findCol(v); if(c) cm[f]=c; });
-        const rows = raw.map(r => {
-          const g = (f) => cm[f] ? String(r[cm[f]]||'').trim() : '';
-          return { accountNo:g('accountNo'), name:g('name'), mobile:g('mobile'), address:g('address'), area:g('area'), fxCode:g('fxCode'), srNumber:g('srNumber') };
-        }).filter(r => r.accountNo);
-        res({ rows, total: raw.length, mapped: rows.length });
+        // Send raw rows as-is — backend handles header normalization
+        res({ rows: raw, total: raw.length, mapped: raw.length });
       } catch(err) { rej(new Error('Parse failed: '+err.message)); }
     };
     rd.onerror = () => rej(new Error('File read failed'));
