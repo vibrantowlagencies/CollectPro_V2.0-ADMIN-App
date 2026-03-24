@@ -333,6 +333,60 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);-webkit-font-s
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+
+/* ── STAFF TAB ──────────────────────────────────────────── */
+.staff-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.staff-stat-box{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:14px 8px;text-align:center;box-shadow:var(--shadow-sm)}
+.staff-stat-val{font-family:var(--fh);font-size:26px;font-weight:800;line-height:1}
+.staff-stat-lbl{font-size:10px;color:var(--text3);font-family:var(--fm);text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
+.staff-add-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--accent),var(--accent-dk));border:none;border-radius:12px;color:#fff;font-family:var(--fh);font-size:14px;font-weight:700;cursor:pointer;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 14px rgba(220,38,38,.25);transition:all .15s}
+.staff-add-btn:active{transform:scale(.99)}
+.staff-add-form{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:14px;box-shadow:var(--shadow-sm)}
+.saf-title{font-family:var(--fh);font-size:14px;font-weight:700;margin-bottom:14px;color:var(--text)}
+.saf-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.saf-field{display:flex;flex-direction:column;gap:5px}
+.saf-label{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.5px;text-transform:uppercase;font-family:var(--fm)}
+.saf-input{padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;font-family:var(--fb);font-size:13px;color:var(--text);background:var(--bg3);outline:none;-webkit-appearance:none;transition:border-color .2s}
+.saf-input:focus{border-color:var(--accent);background:#fff}
+.saf-submit{width:100%;padding:12px;background:linear-gradient(135deg,var(--green),#15803d);border:none;border-radius:10px;color:#fff;font-family:var(--fh);font-size:13px;font-weight:700;cursor:pointer;margin-top:4px;transition:all .15s}
+.saf-submit:disabled{opacity:.45;cursor:not-allowed}
+.role-chips{display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.role-chips::-webkit-scrollbar{display:none}
+.role-chip{flex-shrink:0;padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--bg2);font-family:var(--fh);font-size:11px;font-weight:600;color:var(--text3);cursor:pointer;white-space:nowrap;transition:all .15s}
+.role-chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.scard{background:var(--bg2);border:1.5px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px;box-shadow:var(--shadow-sm);transition:all .15s}
+.scard.inactive{opacity:.65;border-style:dashed}
+.scard-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.scard-avatar{width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-weight:800;font-size:15px;color:#fff;flex-shrink:0;letter-spacing:.5px}
+.av-tc{background:linear-gradient(135deg,#f97316,#ea580c)}
+.av-exec{background:linear-gradient(135deg,#0d9488,#0f766e)}
+.av-sup{background:linear-gradient(135deg,#7c3aed,#6d28d9)}
+.av-admin{background:linear-gradient(135deg,#dc2626,#b91c1c)}
+.av-default{background:linear-gradient(135deg,#64748b,#475569)}
+.scard-info{flex:1;min-width:0}
+.scard-name{font-family:var(--fh);font-size:15px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.scard-meta{font-family:var(--fm);font-size:11px;color:var(--text3);margin-top:2px}
+.scard-badge{flex-shrink:0}
+.scard-divider{height:1px;background:var(--border);margin-bottom:10px}
+.scard-actions{display:flex;gap:7px;flex-wrap:wrap}
+.sact{padding:7px 12px;border-radius:9px;font-family:var(--fh);font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid;transition:all .15s;display:flex;align-items:center;gap:4px}
+.sact:active{transform:scale(.96)}
+.sact-leave{background:var(--accent-lt);color:var(--accent);border-color:rgba(220,38,38,.3)}
+.sact-activate{background:var(--green-lt);color:var(--green);border-color:#86efac}
+.sact-city{background:var(--blue-lt);color:var(--blue);border-color:#bfdbfe}
+.sact-pin{background:var(--amber-lt);color:var(--amber);border-color:#fde68a}
+.scard-owner-note{font-size:11px;color:var(--text3);font-family:var(--fm);font-style:italic;padding:4px 2px}
+.city-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;display:flex;align-items:flex-end;justify-content:center;animation:fadeIn .2s ease}
+.city-drawer{background:var(--bg2);border-radius:20px 20px 0 0;width:100%;max-width:480px;padding:16px 16px 36px;animation:slideIn .25s ease}
+.city-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 14px}
+.city-drawer-title{font-family:var(--fh);font-size:16px;font-weight:700;margin-bottom:6px}
+.city-drawer-sub{font-size:13px;color:var(--text3);margin-bottom:16px}
+.city-opt{display:flex;align-items:center;gap:14px;padding:14px;border:1.5px solid var(--border);border-radius:var(--r);cursor:pointer;margin-bottom:8px;transition:all .15s;background:var(--bg2)}
+.city-opt:active{background:var(--blue-lt);border-color:var(--blue)}
+.city-opt-icon{font-size:28px;flex-shrink:0}
+.city-opt-name{font-family:var(--fh);font-size:14px;font-weight:700}
+.city-opt-sub{font-size:12px;color:var(--text3);margin-top:2px}
+.city-cancel{display:block;text-align:center;padding:12px;font-size:14px;color:var(--text3);cursor:pointer;font-family:var(--fb)}
 </style>
 </head>
 <body>
@@ -1371,11 +1425,9 @@ const StaffTab = ({ session, showToast }) => {
   const [staffList,  setStaffList]  = useState([]);
   const [loading,    setLoading]    = useState(true);
   const [roleFilter, setRoleFilter] = useState('ALL');
-  const [cityTarget, setCityTarget] = useState(null); // { staffId, name, currentCity }
+  const [cityTarget, setCityTarget] = useState(null);
   const [showAdd,    setShowAdd]    = useState(false);
-
-  // Add staff form state
-  const [form, setForm] = useState({
+  const [form,       setForm]       = useState({
     staffId:'', displayName:'', role:'TELECALLER', city:session.city, pin:'1234'
   });
   const [adding, setAdding] = useState(false);
@@ -1383,164 +1435,142 @@ const StaffTab = ({ session, showToast }) => {
   const loadStaff = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await Api.get({
-        action:'get_staff_list', token:session.token,
-        city:'', role:''  // Get all staff
-      });
+      const data = await Api.get({ action:'get_staff_list', token:session.token, city:'', role:'' });
       setStaffList(Array.isArray(data) ? data : []);
-    } catch(e) { showToast(e.message, 'error'); }
+    } catch(e) { showToast(e.message,'error'); }
     finally { setLoading(false); }
   }, [session]);
 
   useEffect(() => { loadStaff(); }, [loadStaff]);
 
-  // ── Toggle active / on leave ──
-  const toggleActive = async(staff) => {
-    const newState = !staff.isActive;
+  const toggleActive = async (s) => {
     try {
-      await Api.post({
-        action:'set_staff_active', token:session.token,
-        staffId:staff.staffId, city:staff.city, active:newState
-      });
-      showToast(staff.displayName + (newState ? ' activated' : ' marked on leave'), 'success');
+      await Api.post({ action:'set_staff_active', token:session.token, staffId:s.staffId, city:s.city, active:!s.isActive });
+      showToast(s.displayName + (s.isActive ? ' marked on leave' : ' activated'), 'success');
       loadStaff();
-    } catch(e) { showToast(e.message, 'error'); }
+    } catch(e) { showToast(e.message,'error'); }
   };
 
-  // ── Switch city ──
-  const switchCity = async(newCity) => {
+  const switchCity = async (newCity) => {
     if (!cityTarget) return;
     try {
-      await Api.post({
-        action:'update_tc_city', token:session.token,
-        targetStaffId:cityTarget.staffId, newCity
-      });
+      await Api.post({ action:'update_tc_city', token:session.token, targetStaffId:cityTarget.staffId, newCity });
       showToast(cityTarget.name + ' moved to ' + newCity, 'success');
-      setCityTarget(null);
-      loadStaff();
-    } catch(e) { showToast(e.message, 'error'); setCityTarget(null); }
+      setCityTarget(null); loadStaff();
+    } catch(e) { showToast(e.message,'error'); setCityTarget(null); }
   };
 
-  // ── Reset PIN ──
-  const resetPin = async(staff) => {
-    const newPin = prompt('New 4-digit PIN for ' + staff.displayName + ':');
-    if (!newPin || newPin.length < 4) { showToast('PIN must be 4 digits', 'error'); return; }
+  const resetPin = async (s) => {
+    const newPin = prompt('New 4-digit PIN for ' + s.displayName + ':');
+    if (!newPin || String(newPin).length < 4) { showToast('PIN must be 4 digits','error'); return; }
     try {
-      await Api.post({
-        action:'reset_pin', token:session.token,
-        staffId:staff.staffId, city:staff.city, newPin
-      });
-      showToast('PIN reset for ' + staff.displayName, 'success');
-    } catch(e) { showToast(e.message, 'error'); }
+      await Api.post({ action:'reset_pin', token:session.token, staffId:s.staffId, city:s.city, newPin });
+      showToast('PIN reset for ' + s.displayName,'success');
+    } catch(e) { showToast(e.message,'error'); }
   };
 
-  // ── Add new staff ──
-  const addStaff = async() => {
-    if (!form.staffId || !form.displayName) {
-      showToast('Staff ID and Name are required', 'error'); return;
-    }
+  const addStaff = async () => {
+    if (!form.staffId || !form.displayName) { showToast('Staff ID and Name required','error'); return; }
     setAdding(true);
     try {
-      await Api.post({
-        action:'create_staff', token:session.token,
-        ...form
-      });
-      showToast(form.displayName + ' added successfully', 'success');
+      await Api.post({ action:'create_staff', token:session.token, ...form });
+      showToast(form.displayName + ' added ✅','success');
       setForm({ staffId:'', displayName:'', role:'TELECALLER', city:session.city, pin:'1234' });
-      setShowAdd(false);
-      loadStaff();
-    } catch(e) { showToast(e.message, 'error'); }
+      setShowAdd(false); loadStaff();
+    } catch(e) { showToast(e.message,'error'); }
     finally { setAdding(false); }
   };
 
-  const ROLE_FILTERS = [
-    {id:'ALL',       label:'All'},
-    {id:'TELECALLER',label:'📞 Telecallers'},
-    {id:'EXECUTIVE', label:'🚗 Executives'},
-    {id:'SUPERVISOR',label:'👁 Supervisors'},
-    {id:'ADMIN',     label:'🔐 Admins'},
-    // OWNER excluded from filters — not managed via admin panel
+  const ROLE_FILTERS  = [
+    {id:'ALL',label:'All'},
+    {id:'TELECALLER',label:'📞 TC'},
+    {id:'EXECUTIVE',label:'🚗 Exec'},
+    {id:'SUPERVISOR',label:'👁 Supervisor'},
+    {id:'ADMIN',label:'🔐 Admin'},
   ];
+  const ROLE_OPTIONS = ['TELECALLER','EXECUTIVE','SUPERVISOR','ADMIN'];
 
-  const ROLE_OPTIONS = ['TELECALLER','EXECUTIVE','SUPERVISOR','ADMIN']; // OWNER excluded — Owner is system-level
+  const getAvClass = (role) => ({
+    TELECALLER:'av-tc', EXECUTIVE:'av-exec', SUPERVISOR:'av-sup', ADMIN:'av-admin'
+  }[role] || 'av-default');
 
-  const getAvatarClass = (role) => {
-    if (role === 'EXECUTIVE')  return 'exec';
-    if (role === 'TELECALLER') return 'tc';
-    if (role === 'SUPERVISOR') return 'sup';
-    return '';
-  };
+  const manageable = useMemo(() => staffList.filter(s => s.role !== 'OWNER'), [staffList]);
+  const filtered   = useMemo(() =>
+    roleFilter === 'ALL' ? manageable : manageable.filter(s => s.role === roleFilter),
+    [manageable, roleFilter]
+  );
 
-  const filtered = useMemo(() => {
-    // Always exclude OWNER from admin-managed staff list
-    const manageable = staffList.filter(s => s.role !== 'OWNER');
-    return roleFilter === 'ALL' ? manageable : manageable.filter(s => s.role === roleFilter);
-  }, [staffList, roleFilter]);
-
-  const activeCount   = staffList.filter(s => s.role !== 'OWNER' && s.isActive).length;
-  const inactiveCount = staffList.filter(s => s.role !== 'OWNER' && !s.isActive).length;
+  const activeCount   = manageable.filter(s => s.isActive).length;
+  const inactiveCount = manageable.filter(s => !s.isActive).length;
 
   return (
     <div className="wrap">
 
-      {/* Summary */}
-      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8,marginBottom:14}}>
-        {[
-          {label:'Total Staff',  val:staffList.filter(s=>s.role!=='OWNER').length, color:'var(--text)'},
-          {label:'Active',       val:activeCount,       color:'var(--green)'},
-          {label:'On Leave',     val:inactiveCount,     color:'var(--amber)'},
-        ].map(s=>(
-          <div key={s.label} style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:12,padding:'12px 8px',textAlign:'center',boxShadow:'var(--shadow-sm)'}}>
-            <div style={{fontFamily:'var(--fh)',fontSize:22,fontWeight:800,color:s.color}}>{s.val}</div>
-            <div style={{fontSize:10,color:'var(--text3)',fontFamily:'var(--fm)',textTransform:'uppercase',marginTop:2}}>{s.label}</div>
-          </div>
-        ))}
+      {/* ── Stats ── */}
+      <div className="staff-stat-row">
+        <div className="staff-stat-box">
+          <div className="staff-stat-val">{manageable.length}</div>
+          <div className="staff-stat-lbl">Total Staff</div>
+        </div>
+        <div className="staff-stat-box">
+          <div className="staff-stat-val" style={{color:'var(--green)'}}>{activeCount}</div>
+          <div className="staff-stat-lbl">Active</div>
+        </div>
+        <div className="staff-stat-box">
+          <div className="staff-stat-val" style={{color:'var(--amber)'}}>{inactiveCount}</div>
+          <div className="staff-stat-lbl">On Leave</div>
+        </div>
       </div>
 
-      {/* Add Staff toggle */}
-      <button className="btn-primary" style={{marginBottom:14}} onClick={()=>setShowAdd(s=>!s)}>
+      {/* ── Add Staff Button ── */}
+      <button className="staff-add-btn" onClick={() => setShowAdd(s => !s)}>
         {showAdd ? '✕ Cancel' : '➕ Add New Staff Member'}
       </button>
 
-      {/* Add Staff Form */}
+      {/* ── Add Staff Form ── */}
       {showAdd && (
-        <div className="add-staff-form">
-          <div className="add-staff-title">🧑‍💼 New Staff Details</div>
-          <div className="form-row">
-            <div className="form-field">
-              <label>Staff ID</label>
-              <input value={form.staffId} onChange={e=>setForm(f=>({...f,staffId:e.target.value.toUpperCase()}))}
+        <div className="staff-add-form">
+          <div className="saf-title">🧑‍💼 New Staff Details</div>
+          <div className="saf-grid">
+            <div className="saf-field">
+              <label className="saf-label">Staff ID</label>
+              <input className="saf-input" value={form.staffId}
+                onChange={e => setForm(f => ({...f, staffId:e.target.value.toUpperCase()}))}
                 placeholder="TC_008" />
             </div>
-            <div className="form-field">
-              <label>Full Name</label>
-              <input value={form.displayName} onChange={e=>setForm(f=>({...f,displayName:e.target.value}))}
+            <div className="saf-field">
+              <label className="saf-label">Full Name</label>
+              <input className="saf-input" value={form.displayName}
+                onChange={e => setForm(f => ({...f, displayName:e.target.value}))}
                 placeholder="Name" />
             </div>
           </div>
-          <div className="form-row">
-            <div className="form-field">
-              <label>Role</label>
-              <select value={form.role} onChange={e=>setForm(f=>({...f,role:e.target.value}))}>
-                {ROLE_OPTIONS.map(r=><option key={r} value={r}>{r}</option>)}
+          <div className="saf-grid">
+            <div className="saf-field">
+              <label className="saf-label">Role</label>
+              <select className="saf-input" value={form.role}
+                onChange={e => setForm(f => ({...f, role:e.target.value}))}>
+                {ROLE_OPTIONS.map(r => <option key={r} value={r}>{r}</option>)}
               </select>
             </div>
-            <div className="form-field">
-              <label>City</label>
-              <select value={form.city} onChange={e=>setForm(f=>({...f,city:e.target.value}))}>
+            <div className="saf-field">
+              <label className="saf-label">City</label>
+              <select className="saf-input" value={form.city}
+                onChange={e => setForm(f => ({...f, city:e.target.value}))}>
                 <option value="CBE">Coimbatore (CBE)</option>
                 <option value="CHN">Chennai (CHN)</option>
               </select>
             </div>
           </div>
-          <div className="form-row">
-            <div className="form-field">
-              <label>Default PIN</label>
-              <input value={form.pin} onChange={e=>setForm(f=>({...f,pin:e.target.value}))}
-                placeholder="1234" maxLength={4} inputMode="numeric"/>
+          <div className="saf-grid">
+            <div className="saf-field">
+              <label className="saf-label">Default PIN</label>
+              <input className="saf-input" value={form.pin} maxLength={4} inputMode="numeric"
+                onChange={e => setForm(f => ({...f, pin:e.target.value.replace(/\D/g,'')}))}
+                placeholder="1234" />
             </div>
-            <div className="form-field" style={{justifyContent:'flex-end'}}>
-              <button className="btn-add-staff" onClick={addStaff} disabled={adding}>
+            <div className="saf-field" style={{justifyContent:'flex-end'}}>
+              <button className="saf-submit" onClick={addStaff} disabled={adding||!form.staffId||!form.displayName}>
                 {adding ? 'Adding…' : '✅ Add Staff'}
               </button>
             </div>
@@ -1548,78 +1578,83 @@ const StaffTab = ({ session, showToast }) => {
         </div>
       )}
 
-      {/* Role Filter */}
-      <div className="role-filter">
-        {ROLE_FILTERS.map(f=>(
-          <button key={f.id} className={`rf-btn${roleFilter===f.id?' on':''}`}
-            onClick={()=>setRoleFilter(f.id)}>{f.label}</button>
+      {/* ── Role Filter Chips ── */}
+      <div className="role-chips">
+        {ROLE_FILTERS.map(f => (
+          <button key={f.id} className={`role-chip${roleFilter===f.id?' on':''}`}
+            onClick={() => setRoleFilter(f.id)}>{f.label}
+          </button>
         ))}
       </div>
 
-      {/* Staff List */}
-      {loading ? [1,2,3,4].map(i=>(
-        <div key={i} style={{height:100,borderRadius:'var(--r)',marginBottom:10}} className="skeleton"/>
-      )) : filtered.map(s=>(
-        <div key={s.staffId} className={`staff-card${s.isActive?'':' inactive'}`}>
-          <div className="staff-top">
-            <div className={`staff-avatar ${getAvatarClass(s.role)}`}>
+      {/* ── Staff Cards ── */}
+      {loading ? [1,2,3,4].map(i => (
+        <div key={i} style={{height:110,borderRadius:14,marginBottom:10}} className="skeleton"/>
+      )) : filtered.length === 0 ? (
+        <div className="coming-soon">
+          <div className="coming-soon-icon">👥</div>
+          <div className="coming-soon-title">No staff in this category</div>
+        </div>
+      ) : filtered.map(s => (
+        <div key={s.staffId} className={`scard${s.isActive?'':' inactive'}`}>
+
+          {/* Card Header */}
+          <div className="scard-header">
+            <div className={`scard-avatar ${getAvClass(s.role)}`}>
               {Utils.initials(s.displayName)}
             </div>
-            <div className="staff-info">
-              <div className="staff-name">{s.displayName}</div>
-              <div className="staff-id">{s.staffId} · {s.city}</div>
+            <div className="scard-info">
+              <div className="scard-name">{s.displayName}</div>
+              <div className="scard-meta">{s.staffId} · {s.city} · {s.role}</div>
             </div>
-            <span className={`badge ${s.isActive?'green':'amber'}`}>
-              {s.isActive ? 'Active' : 'On Leave'}
-            </span>
+            <div className="scard-badge">
+              <span className={`badge ${s.isActive?'green':'amber'}`}>
+                {s.isActive ? 'Active' : 'Leave'}
+              </span>
+            </div>
           </div>
 
-          {/* OWNER is not manageable via Admin panel */}
-          {s.role !== 'OWNER' ? (
-            <div className="staff-actions">
-              <button
-                className={`sa-btn ${s.isActive ? 'deactivate' : 'activate'}`}
-                onClick={()=>toggleActive(s)}>
-                {s.isActive ? '🏖️ Mark Leave' : '✅ Activate'}
-              </button>
-              <button className="sa-btn city"
-                onClick={()=>setCityTarget({staffId:s.staffId, name:s.displayName, currentCity:s.city})}>
+          {/* Divider */}
+          <div className="scard-divider"/>
+
+          {/* Actions */}
+          <div className="scard-actions">
+            <button className={`sact ${s.isActive?'sact-leave':'sact-activate'}`}
+              onClick={() => toggleActive(s)}>
+              {s.isActive ? '🏖️ Mark Leave' : '✅ Activate'}
+            </button>
+            {s.role === 'TELECALLER' && (
+              <button className="sact sact-city"
+                onClick={() => setCityTarget({staffId:s.staffId, name:s.displayName, currentCity:s.city})}>
                 🏙️ {s.city} → Switch
               </button>
-              <button className="sa-btn pin" onClick={()=>resetPin(s)}>
-                🔑 Reset PIN
-              </button>
-            </div>
-          ) : (
-            <div style={{fontSize:11,color:'var(--text3)',fontFamily:'var(--fm)',padding:'4px 2px'}}>
-              🔒 Owner account — managed outside Admin panel
-            </div>
-          )}
+            )}
+            <button className="sact sact-pin" onClick={() => resetPin(s)}>
+              🔑 Reset PIN
+            </button>
+          </div>
         </div>
       ))}
 
-      {/* City Switch Sheet */}
+      {/* ── City Switch Drawer ── */}
       {cityTarget && (
-        <div className="city-sheet-overlay" onClick={()=>setCityTarget(null)}>
-          <div className="city-sheet" onClick={e=>e.stopPropagation()}>
-            <div className="city-sheet-handle"/>
-            <div className="city-sheet-title">
-              🏙️ Switch City — {cityTarget.name}
+        <div className="city-overlay" onClick={() => setCityTarget(null)}>
+          <div className="city-drawer" onClick={e => e.stopPropagation()}>
+            <div className="city-handle"/>
+            <div className="city-drawer-title">🏙️ Switch City</div>
+            <div className="city-drawer-sub">
+              Moving <strong>{cityTarget.name}</strong> from <strong>{cityTarget.currentCity}</strong>
             </div>
-            <div style={{fontSize:13,color:'var(--text3)',marginBottom:14}}>
-              Currently in <strong>{cityTarget.currentCity}</strong>. Select new city:
-            </div>
-            {['CBE','CHN'].filter(c=>c!==cityTarget.currentCity).map(c=>(
-              <div key={c} className="city-opt" onClick={()=>switchCity(c)}>
-                <div style={{fontSize:28}}>🏙️</div>
+            {['CBE','CHN'].filter(c => c !== cityTarget.currentCity).map(c => (
+              <div key={c} className="city-opt" onClick={() => switchCity(c)}>
+                <div className="city-opt-icon">🏙️</div>
                 <div>
                   <div className="city-opt-name">{c === 'CBE' ? 'Coimbatore' : 'Chennai'} ({c})</div>
                   <div className="city-opt-sub">Move {cityTarget.name} to {c} operations</div>
                 </div>
               </div>
             ))}
-            <div style={{textAlign:'center',marginTop:8,fontSize:13,color:'var(--text3)',cursor:'pointer'}}
-              onClick={()=>setCityTarget(null)}>Cancel</div>
+            <div className="city-cancel" onClick={() => setCityTarget(null)}>Cancel</div>
           </div>
         </div>
       )}
