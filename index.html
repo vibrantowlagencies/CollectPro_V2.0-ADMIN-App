@@ -1,3 +1,4 @@
+<!-- Admin App v3.3 — Babel precompiled, no runtime JSX -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +36,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+
 <style>
 :root{
   --bg:#fff5f5;--bg2:#fff;--bg3:#fef2f2;
@@ -391,52 +392,98 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);-webkit-font-s
 </head>
 <body>
 <div id="root"></div>
-<script type="text/babel">
-const { useState, useEffect, useCallback, useRef, useMemo } = React;
+<script>
+const {
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  useMemo
+} = React;
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 //  📁 lib/constants.js
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 const CONFIG = {
-  API_URL:       'https://script.google.com/macros/s/AKfycbyRb7oEMdppJKouU5xCAQVq-IauFaugqXslscYChoFaXkvWzIQzHCg9q5u3AZWAlxB_Pg/exec',
-  CLIENT_ID:     'VOA_CBE',
-  SESSION_KEY:   'voa_session_admin',
-  REFRESH_MS:    25 * 60 * 1000,
-  ALLOWED_ROLES: ['ADMIN','SUPERVISOR','OPS_MANAGER'],
-  CITIES:        ['CBE','CHN'],
+  API_URL: 'https://script.google.com/macros/s/AKfycbyRb7oEMdppJKouU5xCAQVq-IauFaugqXslscYChoFaXkvWzIQzHCg9q5u3AZWAlxB_Pg/exec',
+  CLIENT_ID: 'VOA_CBE',
+  SESSION_KEY: 'voa_session_admin',
+  REFRESH_MS: 25 * 60 * 1000,
+  ALLOWED_ROLES: ['ADMIN', 'SUPERVISOR', 'OPS_MANAGER'],
+  CITIES: ['CBE', 'CHN']
 };
-
-const NAV_TABS = [
-  { id:'home',    icon:'🏠', label:'Home'    },
-  { id:'upload',  icon:'📤', label:'Upload'  },
-  { id:'team',    icon:'👥', label:'Team'    },
-  { id:'staff',   icon:'🧑‍💼', label:'Staff'  },
-  { id:'pending', icon:'📋', label:'Pending' },
-  { id:'issues',  icon:'⚠️', label:'Issues'  },
-  { id:'control', icon:'⚙️', label:'Control' },
-];
-
-const ISSUE_TYPES = [
-  { id:'ALL',              label:'All'         },
-  { id:'ISSUE_JBOX',       label:'J-Box'       },
-  { id:'ISSUE_REFUND',     label:'Refund'      },
-  { id:'ISSUE_MAIL',       label:'Mail Confirm'},
-  { id:'ISSUE_RECONNECTION',label:'Reconnect' },
-  { id:'ISSUE_ADDR',       label:'Addr Change' },
-];
-
+const NAV_TABS = [{
+  id: 'home',
+  icon: '🏠',
+  label: 'Home'
+}, {
+  id: 'upload',
+  icon: '📤',
+  label: 'Upload'
+}, {
+  id: 'team',
+  icon: '👥',
+  label: 'Team'
+}, {
+  id: 'staff',
+  icon: '🧑‍💼',
+  label: 'Staff'
+}, {
+  id: 'pending',
+  icon: '📋',
+  label: 'Pending'
+}, {
+  id: 'issues',
+  icon: '⚠️',
+  label: 'Issues'
+}, {
+  id: 'control',
+  icon: '⚙️',
+  label: 'Control'
+}];
+const ISSUE_TYPES = [{
+  id: 'ALL',
+  label: 'All'
+}, {
+  id: 'ISSUE_JBOX',
+  label: 'J-Box'
+}, {
+  id: 'ISSUE_REFUND',
+  label: 'Refund'
+}, {
+  id: 'ISSUE_MAIL',
+  label: 'Mail Confirm'
+}, {
+  id: 'ISSUE_RECONNECTION',
+  label: 'Reconnect'
+}, {
+  id: 'ISSUE_ADDR',
+  label: 'Addr Change'
+}];
 const ISSUE_SHORT = {
-  ISSUE_JBOX:'JBOX', ISSUE_REFUND:'REFUND', ISSUE_MAIL:'MAIL',
-  ISSUE_RECONNECTION:'RECONNECTION', ISSUE_ADDR:'ADDR'
+  ISSUE_JBOX: 'JBOX',
+  ISSUE_REFUND: 'REFUND',
+  ISSUE_MAIL: 'MAIL',
+  ISSUE_RECONNECTION: 'RECONNECTION',
+  ISSUE_ADDR: 'ADDR'
 };
-
 const STATUS_LABELS = {
-  FRESH:'Fresh',CALLED:'Called',APPT_FIXED:'Appt Fixed',
-  NOT_VISITED:'Not Visited',RESCHEDULED:'Rescheduled',NOT_REACHABLE:'Not Reachable',
-  STRIKE_1:'Strike 1',STRIKE_2:'Strike 2',STRIKE_3:'Strike 3',
-  ISSUE_REFUND:'Refund Issue',ISSUE_RECONNECTION:'Reconnection',
-  ISSUE_MAIL:'Mail Confirm',ISSUE_JBOX:'JBox Issue',ISSUE_ADDR:'Addr Change',
-  COOLING:'Cooling',COOLING_POOL:'Cooling Pool',
+  FRESH: 'Fresh',
+  CALLED: 'Called',
+  APPT_FIXED: 'Appt Fixed',
+  NOT_VISITED: 'Not Visited',
+  RESCHEDULED: 'Rescheduled',
+  NOT_REACHABLE: 'Not Reachable',
+  STRIKE_1: 'Strike 1',
+  STRIKE_2: 'Strike 2',
+  STRIKE_3: 'Strike 3',
+  ISSUE_REFUND: 'Refund Issue',
+  ISSUE_RECONNECTION: 'Reconnection',
+  ISSUE_MAIL: 'Mail Confirm',
+  ISSUE_JBOX: 'JBox Issue',
+  ISSUE_ADDR: 'Addr Change',
+  COOLING: 'Cooling',
+  COOLING_POOL: 'Cooling Pool'
 };
 
 // COLUMN_MAP removed in v3.1
@@ -449,7 +496,7 @@ const Api = {
   async get(p) {
     const url = new URL(CONFIG.API_URL);
     url.searchParams.append('client_id', CONFIG.CLIENT_ID);
-    Object.entries(p).forEach(([k,v]) => url.searchParams.append(k, String(v)));
+    Object.entries(p).forEach(([k, v]) => url.searchParams.append(k, String(v)));
     const r = await fetch(url.toString());
     if (!r.ok) throw new Error('Network error');
     const j = await r.json();
@@ -458,8 +505,14 @@ const Api = {
   },
   async post(body) {
     const r = await fetch(CONFIG.API_URL, {
-      method:'POST', headers:{'Content-Type':'text/plain'},
-      body: JSON.stringify({ client_id: CONFIG.CLIENT_ID, ...body })
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/plain'
+      },
+      body: JSON.stringify({
+        client_id: CONFIG.CLIENT_ID,
+        ...body
+      })
     });
     if (!r.ok) throw new Error('Network error');
     const j = await r.json();
@@ -472,26 +525,81 @@ const Api = {
 //  📁 lib/session.js
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 const SS = {
-  save(d){try{localStorage.setItem(CONFIG.SESSION_KEY,JSON.stringify(d))}catch{}},
-  load(){try{const r=localStorage.getItem(CONFIG.SESSION_KEY);if(!r)return null;const s=JSON.parse(r);const p=(s.token||'').split('|');if(p.length!==5||Date.now()>parseInt(p[4])){this.clear();return null;}return s;}catch{return null;}},
-  clear(){try{localStorage.removeItem(CONFIG.SESSION_KEY)}catch{}}
+  save(d) {
+    try {
+      localStorage.setItem(CONFIG.SESSION_KEY, JSON.stringify(d));
+    } catch {}
+  },
+  load() {
+    try {
+      const r = localStorage.getItem(CONFIG.SESSION_KEY);
+      if (!r) return null;
+      const s = JSON.parse(r);
+      const p = (s.token || '').split('|');
+      if (p.length !== 5 || Date.now() > parseInt(p[4])) {
+        this.clear();
+        return null;
+      }
+      return s;
+    } catch {
+      return null;
+    }
+  },
+  clear() {
+    try {
+      localStorage.removeItem(CONFIG.SESSION_KEY);
+    } catch {}
+  }
 };
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 //  📁 lib/utils.js
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 const Utils = {
-  greeting(){const h=new Date().getHours();return h<12?'Good morning':h<17?'Good afternoon':'Good evening';},
-  dateStr(){return new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});},
-  pin:(v)=>String(v).replace(/\D/g,'').slice(0,4),
-  name1:(n)=>(n||'').split(' ')[0],
-  initials:(n)=>(n||'').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(),
-  hoursAgo(iso){if(!iso)return 0;return Math.round((Date.now()-new Date(iso).getTime())/3600000);},
-  fmtHours(h){if(h<24)return h+'h ago';return Math.floor(h/24)+'d ago';},
-  genBatch(city){const d=new Date();const m=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'][d.getMonth()];return city+'_'+m+'_'+d.getFullYear()+'_1';},
-  today(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');},
-  qualityClass(score){if(score>=90)return'excellent';if(score>=75)return'good';if(score>=50)return'average';return'poor';},
-  qualityLabel(score){if(score>=90)return'Excellent';if(score>=75)return'Good';if(score>=50)return'Average';return'Poor';},
+  greeting() {
+    const h = new Date().getHours();
+    return h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+  },
+  dateStr() {
+    return new Date().toLocaleDateString('en-IN', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
+  },
+  pin: v => String(v).replace(/\D/g, '').slice(0, 4),
+  name1: n => (n || '').split(' ')[0],
+  initials: n => (n || '').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase(),
+  hoursAgo(iso) {
+    if (!iso) return 0;
+    return Math.round((Date.now() - new Date(iso).getTime()) / 3600000);
+  },
+  fmtHours(h) {
+    if (h < 24) return h + 'h ago';
+    return Math.floor(h / 24) + 'd ago';
+  },
+  genBatch(city) {
+    const d = new Date();
+    const m = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'][d.getMonth()];
+    return city + '_' + m + '_' + d.getFullYear() + '_1';
+  },
+  today() {
+    const d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  },
+  qualityClass(score) {
+    if (score >= 90) return 'excellent';
+    if (score >= 75) return 'good';
+    if (score >= 50) return 'average';
+    return 'poor';
+  },
+  qualityLabel(score) {
+    if (score >= 90) return 'Excellent';
+    if (score >= 75) return 'Good';
+    if (score >= 50) return 'Average';
+    return 'Poor';
+  }
 };
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -503,14 +611,27 @@ function parseExcel(file) {
   // No frontend column mapping — works with any ACT Excel format.
   return new Promise((res, rej) => {
     const rd = new FileReader();
-    rd.onload = (e) => {
+    rd.onload = e => {
       try {
-        const wb  = XLSX.read(new Uint8Array(e.target.result), { type:'array' });
-        const raw = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { defval:'' });
-        if (!raw.length) { rej(new Error('File is empty')); return; }
+        const wb = XLSX.read(new Uint8Array(e.target.result), {
+          type: 'array'
+        });
+        const raw = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], {
+          defval: ''
+        });
+        if (!raw.length) {
+          rej(new Error('File is empty'));
+          return;
+        }
         // Send raw rows as-is — backend handles header normalization
-        res({ rows: raw, total: raw.length, mapped: raw.length });
-      } catch(err) { rej(new Error('Parse failed: '+err.message)); }
+        res({
+          rows: raw,
+          total: raw.length,
+          mapped: raw.length
+        });
+      } catch (err) {
+        rej(new Error('Parse failed: ' + err.message));
+      }
     };
     rd.onerror = () => rej(new Error('File read failed'));
     rd.readAsArrayBuffer(file);
@@ -522,98 +643,57 @@ function parseExcel(file) {
 //  Generates downloadable Excel files for ACT reporting
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 const ExcelExport = {
-
   // ACT Base Quality Report
   downloadQualityReport(result, batchHistory) {
     const wb = XLSX.utils.book_new();
     const today = new Date().toLocaleDateString('en-IN');
 
     // Sheet 1: Summary
-    const summary = [
-      ['CollectPro — ACT Base Quality Report'],
-      ['Generated:', today],
-      [''],
-      ['Batch No', result.batchNo],
-      ['City', result.city || 'CBE'],
-      ['Total Uploaded', result.total],
-      ['Workable', result.workable],
-      ['Rejected', result.rejected],
-      ['Quality Score', (result.quality?.score || 0) + '%'],
-      ['Quality Label', result.quality?.label || ''],
-      [''],
-      ['--- REJECTION BREAKDOWN ---'],
-      ['Missing Account No',      result.breakdown?.missingNo     || 0],
-      ['Bad Format',              result.breakdown?.badFormat     || 0],
-      ['Duplicate in Batch',      result.breakdown?.dupInBatch    || 0],
-      ['Matched Historic Memory', result.breakdown?.historicMatch || 0],
-      ['Already in Pipeline',     result.breakdown?.pendingMatch  || 0],
-      [''],
-      ['--- ALLOCATION ---'],
-      ['TC Allocated',   result.tcAllocated   || 0],
-      ['Exec Allocated', result.execAllocated || 0],
-      ['Exec Skipped',   result.execSkipped   || 0],
-    ];
+    const summary = [['CollectPro — ACT Base Quality Report'], ['Generated:', today], [''], ['Batch No', result.batchNo], ['City', result.city || 'CBE'], ['Total Uploaded', result.total], ['Workable', result.workable], ['Rejected', result.rejected], ['Quality Score', (result.quality?.score || 0) + '%'], ['Quality Label', result.quality?.label || ''], [''], ['--- REJECTION BREAKDOWN ---'], ['Missing Account No', result.breakdown?.missingNo || 0], ['Bad Format', result.breakdown?.badFormat || 0], ['Duplicate in Batch', result.breakdown?.dupInBatch || 0], ['Matched Historic Memory', result.breakdown?.historicMatch || 0], ['Already in Pipeline', result.breakdown?.pendingMatch || 0], [''], ['--- ALLOCATION ---'], ['TC Allocated', result.tcAllocated || 0], ['Exec Allocated', result.execAllocated || 0], ['Exec Skipped', result.execSkipped || 0]];
     XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(summary), 'Summary');
 
     // Sheet 2: Rejected accounts (if available)
     if (result.rejectedRows && result.rejectedRows.length > 0) {
-      const rejHeaders = [['Account No','Name','Mobile','Area','City','Batch No','Reject Reason','Rejected At']];
-      const rejData = result.rejectedRows.map(r => [r[0],r[1],r[2],r[4],r[5],r[7],r[8],r[9]]);
-      XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([...rejHeaders,...rejData]), 'Rejected Accounts');
+      const rejHeaders = [['Account No', 'Name', 'Mobile', 'Area', 'City', 'Batch No', 'Reject Reason', 'Rejected At']];
+      const rejData = result.rejectedRows.map(r => [r[0], r[1], r[2], r[4], r[5], r[7], r[8], r[9]]);
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([...rejHeaders, ...rejData]), 'Rejected Accounts');
     }
 
     // Sheet 3: Batch History
     if (batchHistory && batchHistory.length > 0) {
-      const histHeaders = [['Batch No','City','Total','Workable','Rejected','Quality Score','Pushed By','Date']];
-      const histData    = batchHistory.map(b => [b.batchNo,b.city,b.total,b.workable,b.rejected,b.score+'%',b.pushedBy,b.date]);
-      XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([...histHeaders,...histData]), 'Batch History');
+      const histHeaders = [['Batch No', 'City', 'Total', 'Workable', 'Rejected', 'Quality Score', 'Pushed By', 'Date']];
+      const histData = batchHistory.map(b => [b.batchNo, b.city, b.total, b.workable, b.rejected, b.score + '%', b.pushedBy, b.date]);
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([...histHeaders, ...histData]), 'Batch History');
     }
-
-    XLSX.writeFile(wb, 'CollectPro_ACT_Base_Quality_Report_' + (result.batchNo||'') + '.xlsx');
+    XLSX.writeFile(wb, 'CollectPro_ACT_Base_Quality_Report_' + (result.batchNo || '') + '.xlsx');
   },
-
   // ACT Issues Report
   downloadIssuesReport(issues) {
-    const wb    = XLSX.utils.book_new();
+    const wb = XLSX.utils.book_new();
     const today = new Date().toLocaleDateString('en-IN');
 
     // Sheet 1: Summary by type
     const counts = {};
-    ISSUE_TYPES.slice(1).forEach(t => { counts[t.id] = 0; });
-    issues.forEach(i => { if (counts[i.issueType] !== undefined) counts[i.issueType]++; });
-
-    const summary = [
-      ['CollectPro — ACT Issues Report'],
-      ['Generated:', today],
-      ['Total Open Issues:', issues.length],
-      [''],
-      ['Issue Type', 'Count'],
-      ['Junction Box (JBox)',    counts['ISSUE_JBOX']         || 0],
-      ['Refund Pending',         counts['ISSUE_REFUND']       || 0],
-      ['Mail Confirmation',      counts['ISSUE_MAIL']         || 0],
-      ['Reconnection Request',   counts['ISSUE_RECONNECTION'] || 0],
-      ['Address Change',         counts['ISSUE_ADDR']         || 0],
-      [''],
-      ['Note: Please resolve these issues from your end to enable router recovery.'],
-    ];
+    ISSUE_TYPES.slice(1).forEach(t => {
+      counts[t.id] = 0;
+    });
+    issues.forEach(i => {
+      if (counts[i.issueType] !== undefined) counts[i.issueType]++;
+    });
+    const summary = [['CollectPro — ACT Issues Report'], ['Generated:', today], ['Total Open Issues:', issues.length], [''], ['Issue Type', 'Count'], ['Junction Box (JBox)', counts['ISSUE_JBOX'] || 0], ['Refund Pending', counts['ISSUE_REFUND'] || 0], ['Mail Confirmation', counts['ISSUE_MAIL'] || 0], ['Reconnection Request', counts['ISSUE_RECONNECTION'] || 0], ['Address Change', counts['ISSUE_ADDR'] || 0], [''], ['Note: Please resolve these issues from your end to enable router recovery.']];
     XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(summary), 'Issue Summary');
 
     // Sheet 2: All issues
-    const headers = [['Issue ID','Account No','Customer','Mobile','Area','City','Issue Type','TC Remark','Status','Created At']];
-    const rows    = issues.map(i => [i.issueId||'',i.accountNo||'',i.customerName||'',i.mobile||'',i.area||'',i.city||'',i.issueType||'',i.tcRemark||'',i.status||'',i.createdAt||'']);
-    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([...headers,...rows]), 'All Issues');
+    const headers = [['Issue ID', 'Account No', 'Customer', 'Mobile', 'Area', 'City', 'Issue Type', 'TC Remark', 'Status', 'Created At']];
+    const rows = issues.map(i => [i.issueId || '', i.accountNo || '', i.customerName || '', i.mobile || '', i.area || '', i.city || '', i.issueType || '', i.tcRemark || '', i.status || '', i.createdAt || '']);
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([...headers, ...rows]), 'All Issues');
 
     // Sheet 3: JBox issues only (strongest proof for ACT)
     const jboxIssues = issues.filter(i => i.issueType === 'ISSUE_JBOX');
     if (jboxIssues.length > 0) {
-      const jRows = jboxIssues.map(i => [i.issueId||'',i.accountNo||'',i.customerName||'',i.mobile||'',i.area||'',i.tcRemark||'',i.createdAt||'']);
-      XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([
-        [['Junction Box Issues — ACT Responsibility']],
-        [['Account No','Customer','Mobile','Area','TC Remark','Created At']],
-        ...jRows
-      ].flat()), 'JBox Issues (ACT)');
+      const jRows = jboxIssues.map(i => [i.issueId || '', i.accountNo || '', i.customerName || '', i.mobile || '', i.area || '', i.tcRemark || '', i.createdAt || '']);
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([[['Junction Box Issues — ACT Responsibility']], [['Account No', 'Customer', 'Mobile', 'Area', 'TC Remark', 'Created At']], ...jRows].flat()), 'JBox Issues (ACT)');
     }
-
     XLSX.writeFile(wb, 'CollectPro_ACT_Issues_Report_' + Utils.today() + '.xlsx');
   }
 };
@@ -621,1147 +701,2077 @@ const ExcelExport = {
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 //  HOOKS
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-function useToast(){const[t,s]=useState(null);return{toast:t,showToast:(m,tp='error')=>s({msg:m,type:tp}),hideToast:()=>s(null)};}
-
-function useAuth({onSuccess,onError}){
-  const[loading,setLoading]=useState(false);
-  const login=useCallback(async(city,staffId,pin)=>{
-    setLoading(true);
-    try{
-      const d=await Api.get({action:'login',city,staffId:String(staffId).trim().toUpperCase(),pin:pin.trim()});
-      if(!CONFIG.ALLOWED_ROLES.includes(d.role))throw new Error('Access denied. Admin roles only.');
-      const s={token:d.token,staffId:d.staffId,staffName:d.staffName,role:d.role,city:d.city,clientId:d.clientId,loginAt:Date.now()};
-      SS.save(s);onSuccess(s);
-    }catch(e){
-      const m=e.message.includes('Invalid')?'Invalid Staff ID or PIN':e.message.includes('attempts')?'Too many attempts. Wait 10 min.':e.message||'Login failed';
-      onError(m);
-    }finally{setLoading(false);}
-  },[onSuccess,onError]);
-  return{login,loading};
+function useToast() {
+  const [t, s] = useState(null);
+  return {
+    toast: t,
+    showToast: (m, tp = 'error') => s({
+      msg: m,
+      type: tp
+    }),
+    hideToast: () => s(null)
+  };
 }
-
-function useTokenRefresh(session,onExpired){
-  const r=useRef(null);
-  useEffect(()=>{
-    if(!session)return;
-    r.current=setInterval(async()=>{
-      try{const d=await Api.get({action:'login',city:session.city,staffId:session.staffId,token:session.token});SS.save({...session,token:d.token,loginAt:Date.now()});}
-      catch{onExpired();}
-    },CONFIG.REFRESH_MS);
-    return()=>clearInterval(r.current);
-  },[session]);
+function useAuth({
+  onSuccess,
+  onError
+}) {
+  const [loading, setLoading] = useState(false);
+  const login = useCallback(async (city, staffId, pin) => {
+    setLoading(true);
+    try {
+      const d = await Api.get({
+        action: 'login',
+        city,
+        staffId: String(staffId).trim().toUpperCase(),
+        pin: pin.trim()
+      });
+      if (!CONFIG.ALLOWED_ROLES.includes(d.role)) throw new Error('Access denied. Admin roles only.');
+      const s = {
+        token: d.token,
+        staffId: d.staffId,
+        staffName: d.staffName,
+        role: d.role,
+        city: d.city,
+        clientId: d.clientId,
+        loginAt: Date.now()
+      };
+      SS.save(s);
+      onSuccess(s);
+    } catch (e) {
+      const m = e.message.includes('Invalid') ? 'Invalid Staff ID or PIN' : e.message.includes('attempts') ? 'Too many attempts. Wait 10 min.' : e.message || 'Login failed';
+      onError(m);
+    } finally {
+      setLoading(false);
+    }
+  }, [onSuccess, onError]);
+  return {
+    login,
+    loading
+  };
+}
+function useTokenRefresh(session, onExpired) {
+  const r = useRef(null);
+  useEffect(() => {
+    if (!session) return;
+    r.current = setInterval(async () => {
+      try {
+        const d = await Api.get({
+          action: 'login',
+          city: session.city,
+          staffId: session.staffId,
+          token: session.token
+        });
+        SS.save({
+          ...session,
+          token: d.token,
+          loginAt: Date.now()
+        });
+      } catch {
+        onExpired();
+      }
+    }, CONFIG.REFRESH_MS);
+    return () => clearInterval(r.current);
+  }, [session]);
 }
 
 // Data fetching hook
-function useApiData(session, action, params, deps=[]) {
-  const[data,setData]=useState(null);const[loading,setLoading]=useState(true);const[error,setError]=useState(null);
-  const fetch=useCallback(async()=>{
-    if(!session)return;
-    setLoading(true);setError(null);
-    try{const d=await Api.get({action,token:session.token,...(params||{})});setData(d);}
-    catch(e){setError(e.message);}
-    finally{setLoading(false);}
-  },[session,action,JSON.stringify(params),...deps]);
-  useEffect(()=>{fetch();},[fetch]);
-  return{data,loading,error,refresh:fetch};
+function useApiData(session, action, params, deps = []) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const fetch = useCallback(async () => {
+    if (!session) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const d = await Api.get({
+        action,
+        token: session.token,
+        ...(params || {})
+      });
+      setData(d);
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  }, [session, action, JSON.stringify(params), ...deps]);
+  useEffect(() => {
+    fetch();
+  }, [fetch]);
+  return {
+    data,
+    loading,
+    error,
+    refresh: fetch
+  };
 }
-
-function useBaseUpload(session){
-  const[step,setStep]=useState('idle');
-  const[progress,setProgress]=useState(0);
-  const[stepLabel,setStepLabel]=useState('');
-  const[parsed,setParsed]=useState(null);
-  const[result,setResult]=useState(null);
-  const[error,setError]=useState('');
-
-  const reset=useCallback(()=>{setStep('idle');setProgress(0);setStepLabel('');setParsed(null);setResult(null);setError('');},[]);
-
-  const parseFile=useCallback(async(file)=>{
-    setStep('parsing');setProgress(20);setStepLabel('Reading file...');
-    try{const r=await parseExcel(file);setProgress(100);setStepLabel(r.mapped+' accounts ready');setParsed(r);setStep('confirm');}
-    catch(e){setError(e.message);setStep('error');}
-  },[]);
-
-  const runUpload=useCallback(async({city,batchNo,mode,autoAllocate})=>{
-    if(!parsed)return;
+function useBaseUpload(session) {
+  const [step, setStep] = useState('idle');
+  const [progress, setProgress] = useState(0);
+  const [stepLabel, setStepLabel] = useState('');
+  const [parsed, setParsed] = useState(null);
+  const [result, setResult] = useState(null);
+  const [error, setError] = useState('');
+  const reset = useCallback(() => {
+    setStep('idle');
+    setProgress(0);
+    setStepLabel('');
+    setParsed(null);
+    setResult(null);
+    setError('');
+  }, []);
+  const parseFile = useCallback(async file => {
+    setStep('parsing');
+    setProgress(20);
+    setStepLabel('Reading file...');
+    try {
+      const r = await parseExcel(file);
+      setProgress(100);
+      setStepLabel(r.mapped + ' accounts ready');
+      setParsed(r);
+      setStep('confirm');
+    } catch (e) {
+      setError(e.message);
+      setStep('error');
+    }
+  }, []);
+  const runUpload = useCallback(async ({
+    city,
+    batchNo,
+    mode,
+    autoAllocate
+  }) => {
+    if (!parsed) return;
     setStep('uploading');
-    const steps=[{p:15,l:'Connecting...'},{p:30,l:'Sending '+parsed.rows.length+' accounts...'},{p:55,l:'Running duplicate filter...'},{p:70,l:'Checking Historic Memory...'},{p:85,l:'Writing clean base...'},{p:95,l:'Running allocation...'}];
-    let si=0;
-    const tick=setInterval(()=>{if(si<steps.length){setProgress(steps[si].p);setStepLabel(steps[si].l);si++;}},700);
-    try{
-      const d=await Api.post({action:'upload_base',token:session.token,city,batchNo,mode,autoAllocate,autoAllocateExec:autoAllocate,uploaderStaffId:session.staffId,allCities:[city],rows:parsed.rows});
-      clearInterval(tick);setProgress(100);setStepLabel('Upload complete!');setResult(d);setStep('done');
-    }catch(e){clearInterval(tick);setError(e.message);setStep('error');}
-  },[parsed,session]);
-
-  return{step,progress,stepLabel,parsed,result,error,parseFile,runUpload,reset};
+    const steps = [{
+      p: 15,
+      l: 'Connecting...'
+    }, {
+      p: 30,
+      l: 'Sending ' + parsed.rows.length + ' accounts...'
+    }, {
+      p: 55,
+      l: 'Running duplicate filter...'
+    }, {
+      p: 70,
+      l: 'Checking Historic Memory...'
+    }, {
+      p: 85,
+      l: 'Writing clean base...'
+    }, {
+      p: 95,
+      l: 'Running allocation...'
+    }];
+    let si = 0;
+    const tick = setInterval(() => {
+      if (si < steps.length) {
+        setProgress(steps[si].p);
+        setStepLabel(steps[si].l);
+        si++;
+      }
+    }, 700);
+    try {
+      const d = await Api.post({
+        action: 'upload_base',
+        token: session.token,
+        city,
+        batchNo,
+        mode,
+        autoAllocate,
+        autoAllocateExec: autoAllocate,
+        uploaderStaffId: session.staffId,
+        allCities: [city],
+        rows: parsed.rows
+      });
+      clearInterval(tick);
+      setProgress(100);
+      setStepLabel('Upload complete!');
+      setResult(d);
+      setStep('done');
+    } catch (e) {
+      clearInterval(tick);
+      setError(e.message);
+      setStep('error');
+    }
+  }, [parsed, session]);
+  return {
+    step,
+    progress,
+    stepLabel,
+    parsed,
+    result,
+    error,
+    parseFile,
+    runUpload,
+    reset
+  };
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 //  UI COMPONENTS
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-const Toast=({msg,type='error',onDone})=>{useEffect(()=>{const t=setTimeout(onDone,3500);return()=>clearTimeout(t);},[]);return <div className="toast-wrap"><div className={`toast-inner ${type}`}>{msg}</div></div>;};
-const PinDots=({length=0})=><div className="pin-dots">{[0,1,2,3].map(i=><div key={i} className={`pin-dot${length>i?' filled':''}`}/>)}</div>;
-const BrandLogo=({size='lg'})=>{const lg=size==='lg';return<div style={{width:lg?72:34,height:lg?72:34,background:'linear-gradient(135deg,var(--accent),var(--accent-dk))',borderRadius:lg?20:10,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'var(--fh)',fontWeight:800,fontSize:lg?22:11,color:'#fff',letterSpacing:'.5px',flexShrink:0,boxShadow:lg?'0 8px 28px rgba(220,38,38,.28)':'none'}}>VOA</div>;};
-const Skel=({h=20,mb=8})=><div className="skeleton" style={{height:h,marginBottom:mb}}/>;
+const Toast = ({
+  msg,
+  type = 'error',
+  onDone
+}) => {
+  useEffect(() => {
+    const t = setTimeout(onDone, 3500);
+    return () => clearTimeout(t);
+  }, []);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "toast-wrap"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: `toast-inner ${type}`
+  }, msg));
+};
+const PinDots = ({
+  length = 0
+}) => /*#__PURE__*/React.createElement("div", {
+  className: "pin-dots"
+}, [0, 1, 2, 3].map(i => /*#__PURE__*/React.createElement("div", {
+  key: i,
+  className: `pin-dot${length > i ? ' filled' : ''}`
+})));
+const BrandLogo = ({
+  size = 'lg'
+}) => {
+  const lg = size === 'lg';
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: lg ? 72 : 34,
+      height: lg ? 72 : 34,
+      background: 'linear-gradient(135deg,var(--accent),var(--accent-dk))',
+      borderRadius: lg ? 20 : 10,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontFamily: 'var(--fh)',
+      fontWeight: 800,
+      fontSize: lg ? 22 : 11,
+      color: '#fff',
+      letterSpacing: '.5px',
+      flexShrink: 0,
+      boxShadow: lg ? '0 8px 28px rgba(220,38,38,.28)' : 'none'
+    }
+  }, "VOA");
+};
+const Skel = ({
+  h = 20,
+  mb = 8
+}) => /*#__PURE__*/React.createElement("div", {
+  className: "skeleton",
+  style: {
+    height: h,
+    marginBottom: mb
+  }
+});
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 //  🏠 HOME TAB
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-const HomeTab = ({ session, showToast, onTabChange }) => {
-  const {data:overview, loading:ovLoad} = useApiData(session,'get_admin_overview',{city:session.city});
-  const {data:teamData, loading:tmLoad} = useApiData(session,'get_team_performance',{city:session.city});
-
+const HomeTab = ({
+  session,
+  showToast,
+  onTabChange
+}) => {
+  // admin_init: single call returns overview + teamPerf + leaderboard
+  const {
+    data: initData,
+    loading: ovLoad
+  } = useApiData(session, 'admin_init', {
+    city: session.city
+  });
+  const tmLoad = ovLoad;
+  const overview = initData?.overview || null;
+  const teamData = initData?.teamPerf || null;
   const idleTCs = useMemo(() => {
     if (!teamData) return [];
-    return teamData.filter(tc => (tc.callsToday||0) === 0);
+    return teamData.filter(tc => (tc.callsToday || 0) === 0);
   }, [teamData]);
-
   const today = Utils.today();
-
-  return (
-    <div className="wrap">
-      <div className="dash-greeting" style={{fontFamily:'var(--fh)',fontSize:20,fontWeight:700,marginBottom:2}}>
-        {Utils.greeting()}, {Utils.name1(session.staffName)} 👋
-      </div>
-      <div style={{fontSize:12,color:'var(--text3)',fontFamily:'var(--fm)',marginBottom:16}}>{Utils.dateStr()}</div>
-
-      {/* Stat cards */}
-      <div className="stat-grid">
-        {[
-          {cls:'red',   icon:'📋',label:'Total Active',  val:ovLoad?null:((overview?.total||0)-(overview?.collected||0)-(overview?.nonRecoverable||0))},
-          {cls:'green', icon:'✅',label:'MTD Collected', val:ovLoad?null:overview?.mtdCollected},
-          {cls:'amber', icon:'⏳',label:'Pending',       val:ovLoad?null:overview?.pending},
-          {cls:'purple',icon:'⚠️',label:'Open Issues',   val:ovLoad?null:overview?.issues},
-        ].map(c=>(
-          <div key={c.label} className="stat-card">
-            <div className="stat-icon">{c.icon}</div>
-            <div className={`stat-val ${c.cls}`}>{c.val===null?<Skel h={32} mb={0}/>:c.val??'—'}</div>
-            <div className="stat-lbl">{c.label}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* Idle TC Alert */}
-      {idleTCs.length > 0 && (
-        <div className="alert-card red" style={{marginBottom:14}}>
-          <div className="alert-icon">🔔</div>
-          <div>
-            <div className="alert-title">{idleTCs.length} TC{idleTCs.length>1?'s':''} haven't logged a call today</div>
-            <div className="alert-sub">{idleTCs.map(t=>Utils.name1(t.name)).join(' · ')}</div>
-          </div>
-        </div>
-      )}
-
-      {/* Overdue appts */}
-      {!ovLoad && (overview?.overdueAppts||0) > 0 && (
-        <div className="alert-card amber" style={{marginBottom:14}}>
-          <div className="alert-icon">📅</div>
-          <div>
-            <div className="alert-title">{overview.overdueAppts} overdue appointments</div>
-            <div className="alert-sub">Appointments past due date — execs need to follow up</div>
-          </div>
-        </div>
-      )}
-
-      {/* Aging alert */}
-      {!ovLoad && (overview?.aging||0) > 0 && (
-        <div className="alert-card amber" style={{marginBottom:14}}>
-          <div className="alert-icon">⏱</div>
-          <div>
-            <div className="alert-title">{overview.aging} accounts idle &gt; 48 hours</div>
-            <div className="alert-sub">These accounts need immediate TC follow-up</div>
-          </div>
-        </div>
-      )}
-
-      {/* All good */}
-      {!ovLoad && idleTCs.length===0 && (overview?.overdueAppts||0)===0 && (overview?.aging||0)===0 && (
-        <div className="alert-card green" style={{marginBottom:14}}>
-          <div className="alert-icon">✅</div>
-          <div>
-            <div className="alert-title">Team is active — no alerts today</div>
-            <div className="alert-sub">All TCs called · No overdue appointments · No aging accounts</div>
-          </div>
-        </div>
-      )}
-
-      {/* Status breakdown */}
-      {!ovLoad && overview && (
-        <div className="card">
-          <div className="card-title">📊 Status Breakdown</div>
-          {[
-            ['Fresh',        overview.fresh,       'blue'],
-            ['Called',       overview.called,      'green'],
-            ['Appt Fixed',   overview.apptFixed,   'green'],
-            ['Rescheduled',  overview.rescheduled, 'amber'],
-            ['Issues',       overview.issues,      'red'],
-            ['Strikes',      overview.strikes,     'red'],
-          ].filter(([,v])=>v>0).map(([l,v,c])=>(
-            <div key={l} className="row">
-              <span className="row-label">{l}</span>
-              <span className={`row-val ${c}`}>{v}</span>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Quick actions */}
-      <div className="card">
-        <div className="card-title">⚡ Quick Actions</div>
-        <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:8}}>
-          {[
-            {icon:'📤',label:'Upload Base',   tab:'upload'},
-            {icon:'👥',label:'Team View',     tab:'team'},
-            {icon:'📋',label:'View Pending',  tab:'pending'},
-            {icon:'⚠️',label:'Open Issues',   tab:'issues'},
-          ].map(a=>(
-            <button key={a.tab} onClick={()=>onTabChange(a.tab)} style={{padding:'12px 8px',background:'var(--bg3)',border:'1px solid var(--border)',borderRadius:'var(--r)',cursor:'pointer',display:'flex',flexDirection:'column',alignItems:'center',gap:4,fontFamily:'var(--fh)',fontSize:12,fontWeight:700,color:'var(--text)',transition:'all .15s'}}>
-              <span style={{fontSize:20}}>{a.icon}</span>{a.label}
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+  return /*#__PURE__*/React.createElement("div", {
+    className: "wrap"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "dash-greeting",
+    style: {
+      fontFamily: 'var(--fh)',
+      fontSize: 20,
+      fontWeight: 700,
+      marginBottom: 2
+    }
+  }, Utils.greeting(), ", ", Utils.name1(session.staffName), " \uD83D\uDC4B"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: 'var(--text3)',
+      fontFamily: 'var(--fm)',
+      marginBottom: 16
+    }
+  }, Utils.dateStr()), /*#__PURE__*/React.createElement("div", {
+    className: "stat-grid"
+  }, [{
+    cls: 'red',
+    icon: '📋',
+    label: 'Total Active',
+    val: ovLoad ? null : (overview?.total || 0) - (overview?.collected || 0) - (overview?.nonRecoverable || 0)
+  }, {
+    cls: 'green',
+    icon: '✅',
+    label: 'MTD Collected',
+    val: ovLoad ? null : overview?.mtdCollected
+  }, {
+    cls: 'amber',
+    icon: '⏳',
+    label: 'Pending',
+    val: ovLoad ? null : overview?.pending
+  }, {
+    cls: 'purple',
+    icon: '⚠️',
+    label: 'Open Issues',
+    val: ovLoad ? null : overview?.issues
+  }].map(c => /*#__PURE__*/React.createElement("div", {
+    key: c.label,
+    className: "stat-card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-icon"
+  }, c.icon), /*#__PURE__*/React.createElement("div", {
+    className: `stat-val ${c.cls}`
+  }, c.val === null ? /*#__PURE__*/React.createElement(Skel, {
+    h: 32,
+    mb: 0
+  }) : c.val ?? '—'), /*#__PURE__*/React.createElement("div", {
+    className: "stat-lbl"
+  }, c.label)))), idleTCs.length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "alert-card red",
+    style: {
+      marginBottom: 14
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "alert-icon"
+  }, "\uD83D\uDD14"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "alert-title"
+  }, idleTCs.length, " TC", idleTCs.length > 1 ? 's' : '', " haven't logged a call today"), /*#__PURE__*/React.createElement("div", {
+    className: "alert-sub"
+  }, idleTCs.map(t => Utils.name1(t.name)).join(' · ')))), !ovLoad && (overview?.overdueAppts || 0) > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "alert-card amber",
+    style: {
+      marginBottom: 14
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "alert-icon"
+  }, "\uD83D\uDCC5"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "alert-title"
+  }, overview.overdueAppts, " overdue appointments"), /*#__PURE__*/React.createElement("div", {
+    className: "alert-sub"
+  }, "Appointments past due date \u2014 execs need to follow up"))), !ovLoad && (overview?.aging || 0) > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "alert-card amber",
+    style: {
+      marginBottom: 14
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "alert-icon"
+  }, "\u23F1"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "alert-title"
+  }, overview.aging, " accounts idle > 48 hours"), /*#__PURE__*/React.createElement("div", {
+    className: "alert-sub"
+  }, "These accounts need immediate TC follow-up"))), !ovLoad && idleTCs.length === 0 && (overview?.overdueAppts || 0) === 0 && (overview?.aging || 0) === 0 && /*#__PURE__*/React.createElement("div", {
+    className: "alert-card green",
+    style: {
+      marginBottom: 14
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "alert-icon"
+  }, "\u2705"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "alert-title"
+  }, "Team is active \u2014 no alerts today"), /*#__PURE__*/React.createElement("div", {
+    className: "alert-sub"
+  }, "All TCs called \xB7 No overdue appointments \xB7 No aging accounts"))), !ovLoad && overview && /*#__PURE__*/React.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-title"
+  }, "\uD83D\uDCCA Status Breakdown"), [['Fresh', overview.fresh, 'blue'], ['Called', overview.called, 'green'], ['Appt Fixed', overview.apptFixed, 'green'], ['Rescheduled', overview.rescheduled, 'amber'], ['Issues', overview.issues, 'red'], ['Strikes', overview.strikes, 'red']].filter(([, v]) => v > 0).map(([l, v, c]) => /*#__PURE__*/React.createElement("div", {
+    key: l,
+    className: "row"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "row-label"
+  }, l), /*#__PURE__*/React.createElement("span", {
+    className: `row-val ${c}`
+  }, v)))), /*#__PURE__*/React.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-title"
+  }, "\u26A1 Quick Actions"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(2,1fr)',
+      gap: 8
+    }
+  }, [{
+    icon: '📤',
+    label: 'Upload Base',
+    tab: 'upload'
+  }, {
+    icon: '👥',
+    label: 'Team View',
+    tab: 'team'
+  }, {
+    icon: '📋',
+    label: 'View Pending',
+    tab: 'pending'
+  }, {
+    icon: '⚠️',
+    label: 'Open Issues',
+    tab: 'issues'
+  }].map(a => /*#__PURE__*/React.createElement("button", {
+    key: a.tab,
+    onClick: () => onTabChange(a.tab),
+    style: {
+      padding: '12px 8px',
+      background: 'var(--bg3)',
+      border: '1px solid var(--border)',
+      borderRadius: 'var(--r)',
+      cursor: 'pointer',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: 4,
+      fontFamily: 'var(--fh)',
+      fontSize: 12,
+      fontWeight: 700,
+      color: 'var(--text)',
+      transition: 'all .15s'
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 20
+    }
+  }, a.icon), a.label)))));
 };
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 //  📤 UPLOAD TAB
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-const QualityReport = ({ result, onReset, session }) => {
-  const qClass = Utils.qualityClass(result.quality?.score||0);
-  const score  = result.quality?.score||0;
-  const {data:batchHistory} = useApiData(session,'get_batch_history',{city:result.city||'CBE'});
-
-  const maxWorkable = useMemo(()=>{
-    if(!batchHistory||!batchHistory.length)return result.workable||1;
-    return Math.max(...batchHistory.map(b=>b.workable||0), result.workable||1);
-  },[batchHistory,result]);
-
-  return (
-    <div>
-      {/* Quality hero */}
-      <div className={`qr-hero ${qClass}`}>
-        <div className="qr-hero-label">Base Quality Score · {result.batchNo}</div>
-        <div className="qr-score">{score}%</div>
-        <div className="qr-msg">{result.quality?.label} — {result.quality?.msg}</div>
-      </div>
-
-      {/* Stats */}
-      <div className="qr-stats">
-        <div className="qr-stat"><div className="qr-stat-val g">{result.workable}</div><div className="qr-stat-lbl">Workable</div></div>
-        <div className="qr-stat"><div className="qr-stat-val r">{result.rejected}</div><div className="qr-stat-lbl">Rejected</div></div>
-        <div className="qr-stat"><div className="qr-stat-val a">{result.total}</div><div className="qr-stat-lbl">Total</div></div>
-      </div>
-
-      {/* Rejection breakdown bars */}
-      <div className="card">
-        <div className="card-title">🔍 Rejection Breakdown</div>
-        {[
-          {label:'Missing Acct No', val:result.breakdown?.missingNo||0,     color:'var(--accent)'},
-          {label:'Bad Format',      val:result.breakdown?.badFormat||0,     color:'var(--accent)'},
-          {label:'Batch Duplicate', val:result.breakdown?.dupInBatch||0,    color:'var(--amber)'},
-          {label:'Historic Match',  val:result.breakdown?.historicMatch||0, color:'var(--amber)'},
-          {label:'In Pipeline',     val:result.breakdown?.pendingMatch||0,  color:'var(--amber)'},
-        ].map(item=>(
-          <div key={item.label} className="qr-bar-row">
-            <span className="qr-bar-label">{item.label}</span>
-            <div className="qr-bar-outer">
-              <div className="qr-bar-inner" style={{width:item.val?(item.val/result.rejected*100)+'%':'0%',background:item.color}}/>
-            </div>
-            <span className="qr-bar-count" style={{color:item.val?item.color:'var(--text3)'}}>{item.val}</span>
-          </div>
-        ))}
-        {result.rejected===0 && <div style={{fontSize:12,color:'var(--green)',fontFamily:'var(--fm)',textAlign:'center',padding:'6px 0'}}>✅ Zero rejections — perfect data</div>}
-      </div>
-
-      {/* Allocation */}
-      <div className="card">
-        <div className="card-title">🎯 Allocation Result</div>
-        <div className="row"><span className="row-label">📞 TCs Assigned</span><span className={`row-val ${result.tcError?'red':'green'}`}>{result.tcError?'Failed':result.tcAllocated+' assigned'}</span></div>
-        <div className="row"><span className="row-label">👷 Execs Assigned</span><span className={`row-val ${result.execSkipped>0?'amber':'green'}`}>{result.execAllocated} assigned{result.execSkipped>0?` · ${result.execSkipped} skipped`:''}</span></div>
-      </div>
-
-      {/* Warnings */}
-      {result.unmappedFxCodes?.length>0 && (
-        <div className="warn-banner">
-          <span style={{fontSize:16}}>⚠️</span>
-          <div><div className="warn-banner-text">{result.execSkipped} accounts skipped — unmapped FX codes</div>
-          <div className="warn-codes">{result.unmappedFxCodes.join(' · ')}</div></div>
-        </div>
-      )}
-      {result.tcError && <div className="warn-banner"><span style={{fontSize:16}}>⚠️</span><div className="warn-banner-text">TC allocation failed: {result.tcError}. Activate TCs and run manually.</div></div>}
-
-      {/* Download ACT Report */}
-      <button className="btn-excel" onClick={()=>ExcelExport.downloadQualityReport(result, batchHistory||[])}>
-        📥 Download ACT Base Quality Report (.xlsx)
-      </button>
-
-      {/* Batch History */}
-      {batchHistory && batchHistory.length > 0 && (
-        <div>
-          <div className="section-title" style={{marginTop:8}}>📋 Batch History</div>
-          {batchHistory.slice(0,5).map((b,i)=>{
-            const bc=Utils.qualityClass(b.score||0);
-            return(
-              <div key={i} className="batch-item">
-                <div className={`batch-score-circle ${bc}`}>{b.score||0}%</div>
-                <div className="batch-info">
-                  <div className="batch-no">{b.batchNo}</div>
-                  <div className="batch-meta">{b.city} · {b.date} · by {b.pushedBy}</div>
-                </div>
-                <div className="batch-stats">
-                  <div className="batch-workable">{b.workable}</div>
-                  <div className="batch-rejected">{b.rejected} rejected</div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
-
-      <button className="btn-secondary" onClick={onReset}>↑ Upload Another Batch</button>
-    </div>
-  );
+const QualityReport = ({
+  result,
+  onReset,
+  session
+}) => {
+  const qClass = Utils.qualityClass(result.quality?.score || 0);
+  const score = result.quality?.score || 0;
+  const {
+    data: batchHistory
+  } = useApiData(session, 'get_batches', {
+    city: result.city || 'CBE'
+  });
+  const maxWorkable = useMemo(() => {
+    if (!batchHistory || !batchHistory.length) return result.workable || 1;
+    return Math.max(...batchHistory.map(b => b.workable || 0), result.workable || 1);
+  }, [batchHistory, result]);
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: `qr-hero ${qClass}`
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "qr-hero-label"
+  }, "Base Quality Score \xB7 ", result.batchNo), /*#__PURE__*/React.createElement("div", {
+    className: "qr-score"
+  }, score, "%"), /*#__PURE__*/React.createElement("div", {
+    className: "qr-msg"
+  }, result.quality?.label, " \u2014 ", result.quality?.msg)), /*#__PURE__*/React.createElement("div", {
+    className: "qr-stats"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "qr-stat"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "qr-stat-val g"
+  }, result.workable), /*#__PURE__*/React.createElement("div", {
+    className: "qr-stat-lbl"
+  }, "Workable")), /*#__PURE__*/React.createElement("div", {
+    className: "qr-stat"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "qr-stat-val r"
+  }, result.rejected), /*#__PURE__*/React.createElement("div", {
+    className: "qr-stat-lbl"
+  }, "Rejected")), /*#__PURE__*/React.createElement("div", {
+    className: "qr-stat"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "qr-stat-val a"
+  }, result.total), /*#__PURE__*/React.createElement("div", {
+    className: "qr-stat-lbl"
+  }, "Total"))), /*#__PURE__*/React.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-title"
+  }, "\uD83D\uDD0D Rejection Breakdown"), [{
+    label: 'Missing Acct No',
+    val: result.breakdown?.missingNo || 0,
+    color: 'var(--accent)'
+  }, {
+    label: 'Bad Format',
+    val: result.breakdown?.badFormat || 0,
+    color: 'var(--accent)'
+  }, {
+    label: 'Batch Duplicate',
+    val: result.breakdown?.dupInBatch || 0,
+    color: 'var(--amber)'
+  }, {
+    label: 'Historic Match',
+    val: result.breakdown?.historicMatch || 0,
+    color: 'var(--amber)'
+  }, {
+    label: 'In Pipeline',
+    val: result.breakdown?.pendingMatch || 0,
+    color: 'var(--amber)'
+  }].map(item => /*#__PURE__*/React.createElement("div", {
+    key: item.label,
+    className: "qr-bar-row"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "qr-bar-label"
+  }, item.label), /*#__PURE__*/React.createElement("div", {
+    className: "qr-bar-outer"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "qr-bar-inner",
+    style: {
+      width: item.val ? item.val / result.rejected * 100 + '%' : '0%',
+      background: item.color
+    }
+  })), /*#__PURE__*/React.createElement("span", {
+    className: "qr-bar-count",
+    style: {
+      color: item.val ? item.color : 'var(--text3)'
+    }
+  }, item.val))), result.rejected === 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: 'var(--green)',
+      fontFamily: 'var(--fm)',
+      textAlign: 'center',
+      padding: '6px 0'
+    }
+  }, "\u2705 Zero rejections \u2014 perfect data")), /*#__PURE__*/React.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-title"
+  }, "\uD83C\uDFAF Allocation Result"), /*#__PURE__*/React.createElement("div", {
+    className: "row"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "row-label"
+  }, "\uD83D\uDCDE TCs Assigned"), /*#__PURE__*/React.createElement("span", {
+    className: `row-val ${result.tcError ? 'red' : 'green'}`
+  }, result.tcError ? 'Failed' : result.tcAllocated + ' assigned')), /*#__PURE__*/React.createElement("div", {
+    className: "row"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "row-label"
+  }, "\uD83D\uDC77 Execs Assigned"), /*#__PURE__*/React.createElement("span", {
+    className: `row-val ${result.execSkipped > 0 ? 'amber' : 'green'}`
+  }, result.execAllocated, " assigned", result.execSkipped > 0 ? ` · ${result.execSkipped} skipped` : ''))), result.unmappedFxCodes?.length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "warn-banner"
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 16
+    }
+  }, "\u26A0\uFE0F"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "warn-banner-text"
+  }, result.execSkipped, " accounts skipped \u2014 unmapped FX codes"), /*#__PURE__*/React.createElement("div", {
+    className: "warn-codes"
+  }, result.unmappedFxCodes.join(' · ')))), result.tcError && /*#__PURE__*/React.createElement("div", {
+    className: "warn-banner"
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 16
+    }
+  }, "\u26A0\uFE0F"), /*#__PURE__*/React.createElement("div", {
+    className: "warn-banner-text"
+  }, "TC allocation failed: ", result.tcError, ". Activate TCs and run manually.")), /*#__PURE__*/React.createElement("button", {
+    className: "btn-excel",
+    onClick: () => ExcelExport.downloadQualityReport(result, batchHistory || [])
+  }, "\uD83D\uDCE5 Download ACT Base Quality Report (.xlsx)"), batchHistory && batchHistory.length > 0 && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "section-title",
+    style: {
+      marginTop: 8
+    }
+  }, "\uD83D\uDCCB Batch History"), batchHistory.slice(0, 5).map((b, i) => {
+    const bc = Utils.qualityClass(b.score || 0);
+    return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      className: "batch-item"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: `batch-score-circle ${bc}`
+    }, b.score || 0, "%"), /*#__PURE__*/React.createElement("div", {
+      className: "batch-info"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "batch-no"
+    }, b.batchNo), /*#__PURE__*/React.createElement("div", {
+      className: "batch-meta"
+    }, b.city, " \xB7 ", b.date, " \xB7 by ", b.pushedBy)), /*#__PURE__*/React.createElement("div", {
+      className: "batch-stats"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "batch-workable"
+    }, b.workable), /*#__PURE__*/React.createElement("div", {
+      className: "batch-rejected"
+    }, b.rejected, " rejected")));
+  })), /*#__PURE__*/React.createElement("button", {
+    className: "btn-secondary",
+    onClick: onReset
+  }, "\u2191 Upload Another Batch"));
 };
-
-const UploadTab = ({ session, showToast }) => {
-  const [city,        setCity]        = useState(session.city||'CBE');
-  const [mode,        setMode]        = useState('REPLACE');
-  const [autoAlloc,   setAutoAlloc]   = useState(true);
-  const [batchNo,     setBatchNo]     = useState('');
-  const [file,        setFile]        = useState(null);
-  const [dragOver,    setDragOver]    = useState(false);
+const UploadTab = ({
+  session,
+  showToast
+}) => {
+  const [city, setCity] = useState(session.city || 'CBE');
+  const [mode, setMode] = useState('REPLACE');
+  const [autoAlloc, setAutoAlloc] = useState(true);
+  const [batchNo, setBatchNo] = useState('');
+  const [file, setFile] = useState(null);
+  const [dragOver, setDragOver] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const fileRef = useRef(null);
-  const { step, progress, stepLabel, parsed, result, error, parseFile, runUpload, reset } = useBaseUpload(session);
-
-  useEffect(()=>{ setBatchNo(Utils.genBatch(city)); },[city]);
-
-  const handleFile = useCallback(async(f)=>{
-    if(!f)return;
-    const ext=f.name.split('.').pop().toLowerCase();
-    if(!['xlsx','xls','csv'].includes(ext)){showToast('Only .xlsx, .xls or .csv accepted','error');return;}
-    setFile(f); await parseFile(f);
-  },[parseFile,showToast]);
-
-  const handleDrop=useCallback((e)=>{e.preventDefault();setDragOver(false);const f=e.dataTransfer.files[0];if(f)handleFile(f);},[handleFile]);
-
-  const handleRun=()=>{
-    if(!parsed){showToast('Select a file first','error');return;}
-    if(mode==='REPLACE'){setShowConfirm(true);return;}
+  const {
+    step,
+    progress,
+    stepLabel,
+    parsed,
+    result,
+    error,
+    parseFile,
+    runUpload,
+    reset
+  } = useBaseUpload(session);
+  useEffect(() => {
+    setBatchNo(Utils.genBatch(city));
+  }, [city]);
+  const handleFile = useCallback(async f => {
+    if (!f) return;
+    const ext = f.name.split('.').pop().toLowerCase();
+    if (!['xlsx', 'xls', 'csv'].includes(ext)) {
+      showToast('Only .xlsx, .xls or .csv accepted', 'error');
+      return;
+    }
+    setFile(f);
+    await parseFile(f);
+  }, [parseFile, showToast]);
+  const handleDrop = useCallback(e => {
+    e.preventDefault();
+    setDragOver(false);
+    const f = e.dataTransfer.files[0];
+    if (f) handleFile(f);
+  }, [handleFile]);
+  const handleRun = () => {
+    if (!parsed) {
+      showToast('Select a file first', 'error');
+      return;
+    }
+    if (mode === 'REPLACE') {
+      setShowConfirm(true);
+      return;
+    }
     doRun();
   };
-  const doRun=()=>{setShowConfirm(false);runUpload({city,batchNo:batchNo||Utils.genBatch(city),mode,autoAllocate:autoAlloc});};
-
-  useEffect(()=>{if(step==='error'&&error)showToast(error,'error');},[step,error]);
-
-  if(step==='done'&&result) return <div className="wrap"><div className="section-title">📊 Base Quality Report</div><QualityReport result={result} onReset={reset} session={session}/></div>;
-
-  return (
-    <div className="wrap">
-      <div className="section-title">📤 Upload ACT Base</div>
-
-      {(step==='idle'||step==='confirm') && <>
-        <div className={`upload-zone${dragOver?' drag-over':''}${parsed?' has-file':''}`}
-          onDragOver={e=>{e.preventDefault();setDragOver(true)}}
-          onDragLeave={()=>setDragOver(false)}
-          onDrop={handleDrop}
-          onClick={()=>!parsed&&fileRef.current?.click()}
-        >
-          <input ref={fileRef} type="file" accept=".xlsx,.xls,.csv" onChange={e=>e.target.files[0]&&handleFile(e.target.files[0])} onClick={e=>e.stopPropagation()}/>
-          <div className="upload-zone-icon">{parsed?'✅':'📂'}</div>
-          <div className="upload-zone-title">{parsed?file?.name:'Tap to select or drag & drop'}</div>
-          <div className="upload-zone-sub">{parsed?parsed.mapped+' accounts ready':'.xlsx · .xls · .csv — ACT base file'}</div>
-        </div>
-
-        {parsed && (
-          <div className="file-info">
-            <span style={{fontSize:22}}>📊</span>
-            <div><div className="file-name">{file?.name}</div><div className="file-rows">{parsed.total} rows · {parsed.mapped} with Account No</div></div>
-            <button className="file-clear" onClick={e=>{e.stopPropagation();setFile(null);reset();}}>✕</button>
-          </div>
-        )}
-      </>}
-
-      {(step==='parsing'||step==='uploading') && (
-        <div className="progress-wrap">
-          <div className="progress-label"><span>{step==='parsing'?'📂 Parsing':'🚀 Uploading'}</span><span>{progress}%</span></div>
-          <div className="progress-bar-outer"><div className="progress-bar-inner" style={{width:progress+'%'}}/></div>
-          <div className="progress-step">{stepLabel}</div>
-        </div>
-      )}
-
-      {(step==='idle'||step==='confirm') && (
-        <div className="config-card">
-          <div className="config-row">
-            <div><div className="config-label">City</div></div>
-            <div className="toggle-wrap">
-              {CONFIG.CITIES.map(c=><button key={c} className={`toggle-opt${city===c?' on':''}`} onClick={()=>setCity(c)}>{c}</button>)}
-            </div>
-          </div>
-          <div className="config-row">
-            <div><div className="config-label">Mode</div><div className="config-sub">{mode==='REPLACE'?'Clear existing first':'Add to existing'}</div></div>
-            <div className="toggle-wrap">
-              <button className={`toggle-opt${mode==='REPLACE'?' on':''}`} onClick={()=>setMode('REPLACE')}>Replace</button>
-              <button className={`toggle-opt on green${mode==='APPEND'?' on':''}`} style={mode==='APPEND'?{background:'var(--green)',color:'#fff'}:{}} onClick={()=>setMode('APPEND')}>Append</button>
-            </div>
-          </div>
-          <div className="config-row">
-            <div><div className="config-label">Auto Allocate</div><div className="config-sub">{autoAlloc?'TC + Exec auto-assigned':'Allocate manually later'}</div></div>
-            <div className="toggle-wrap">
-              <button className="toggle-opt" style={autoAlloc?{background:'var(--green)',color:'#fff'}:{}} onClick={()=>setAutoAlloc(true)}>Auto</button>
-              <button className="toggle-opt" style={!autoAlloc?{background:'var(--amber)',color:'#fff'}:{}} onClick={()=>setAutoAlloc(false)}>Manual</button>
-            </div>
-          </div>
-          <div className="config-row col">
-            <div className="config-label">Batch Label</div>
-            <input className="batch-input" value={batchNo} onChange={e=>setBatchNo(e.target.value.toUpperCase())} placeholder={Utils.genBatch(city)}/>
-          </div>
-        </div>
-      )}
-
-      {(step==='idle'||step==='confirm') && (
-        <button className="btn-primary" onClick={handleRun} disabled={!parsed||step==='parsing'}>
-          {!parsed?'📂 Select a file to continue':`🚀 Run Pipeline — ${parsed.mapped} accounts`}
-        </button>
-      )}
-
-      {showConfirm && (
-        <div className="confirm-overlay" onClick={()=>setShowConfirm(false)}>
-          <div className="confirm-sheet" onClick={e=>e.stopPropagation()}>
-            <div className="confirm-title">⚠️ Replace Mode</div>
-            <div className="confirm-body">This will <strong>clear TC_Base_Clean for {city}</strong> before uploading {parsed?.mapped} new accounts. This cannot be undone.</div>
-            <div className="confirm-actions">
-              <button className="confirm-cancel" onClick={()=>setShowConfirm(false)}>Cancel</button>
-              <button className="confirm-proceed" onClick={doRun}>Yes, Replace</button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
+  const doRun = () => {
+    setShowConfirm(false);
+    runUpload({
+      city,
+      batchNo: batchNo || Utils.genBatch(city),
+      mode,
+      autoAllocate: autoAlloc
+    });
+  };
+  useEffect(() => {
+    if (step === 'error' && error) showToast(error, 'error');
+  }, [step, error]);
+  if (step === 'done' && result) return /*#__PURE__*/React.createElement("div", {
+    className: "wrap"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "section-title"
+  }, "\uD83D\uDCCA Base Quality Report"), /*#__PURE__*/React.createElement(QualityReport, {
+    result: result,
+    onReset: reset,
+    session: session
+  }));
+  return /*#__PURE__*/React.createElement("div", {
+    className: "wrap"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "section-title"
+  }, "\uD83D\uDCE4 Upload ACT Base"), (step === 'idle' || step === 'confirm') && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: `upload-zone${dragOver ? ' drag-over' : ''}${parsed ? ' has-file' : ''}`,
+    onDragOver: e => {
+      e.preventDefault();
+      setDragOver(true);
+    },
+    onDragLeave: () => setDragOver(false),
+    onDrop: handleDrop,
+    onClick: () => !parsed && fileRef.current?.click()
+  }, /*#__PURE__*/React.createElement("input", {
+    ref: fileRef,
+    type: "file",
+    accept: ".xlsx,.xls,.csv",
+    onChange: e => e.target.files[0] && handleFile(e.target.files[0]),
+    onClick: e => e.stopPropagation()
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "upload-zone-icon"
+  }, parsed ? '✅' : '📂'), /*#__PURE__*/React.createElement("div", {
+    className: "upload-zone-title"
+  }, parsed ? file?.name : 'Tap to select or drag & drop'), /*#__PURE__*/React.createElement("div", {
+    className: "upload-zone-sub"
+  }, parsed ? parsed.mapped + ' accounts ready' : '.xlsx · .xls · .csv — ACT base file')), parsed && /*#__PURE__*/React.createElement("div", {
+    className: "file-info"
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 22
+    }
+  }, "\uD83D\uDCCA"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "file-name"
+  }, file?.name), /*#__PURE__*/React.createElement("div", {
+    className: "file-rows"
+  }, parsed.total, " rows \xB7 ", parsed.mapped, " with Account No")), /*#__PURE__*/React.createElement("button", {
+    className: "file-clear",
+    onClick: e => {
+      e.stopPropagation();
+      setFile(null);
+      reset();
+    }
+  }, "\u2715"))), (step === 'parsing' || step === 'uploading') && /*#__PURE__*/React.createElement("div", {
+    className: "progress-wrap"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "progress-label"
+  }, /*#__PURE__*/React.createElement("span", null, step === 'parsing' ? '📂 Parsing' : '🚀 Uploading'), /*#__PURE__*/React.createElement("span", null, progress, "%")), /*#__PURE__*/React.createElement("div", {
+    className: "progress-bar-outer"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "progress-bar-inner",
+    style: {
+      width: progress + '%'
+    }
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "progress-step"
+  }, stepLabel)), (step === 'idle' || step === 'confirm') && /*#__PURE__*/React.createElement("div", {
+    className: "config-card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "config-row"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "config-label"
+  }, "City")), /*#__PURE__*/React.createElement("div", {
+    className: "toggle-wrap"
+  }, CONFIG.CITIES.map(c => /*#__PURE__*/React.createElement("button", {
+    key: c,
+    className: `toggle-opt${city === c ? ' on' : ''}`,
+    onClick: () => setCity(c)
+  }, c)))), /*#__PURE__*/React.createElement("div", {
+    className: "config-row"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "config-label"
+  }, "Mode"), /*#__PURE__*/React.createElement("div", {
+    className: "config-sub"
+  }, mode === 'REPLACE' ? 'Clear existing first' : 'Add to existing')), /*#__PURE__*/React.createElement("div", {
+    className: "toggle-wrap"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: `toggle-opt${mode === 'REPLACE' ? ' on' : ''}`,
+    onClick: () => setMode('REPLACE')
+  }, "Replace"), /*#__PURE__*/React.createElement("button", {
+    className: `toggle-opt on green${mode === 'APPEND' ? ' on' : ''}`,
+    style: mode === 'APPEND' ? {
+      background: 'var(--green)',
+      color: '#fff'
+    } : {},
+    onClick: () => setMode('APPEND')
+  }, "Append"))), /*#__PURE__*/React.createElement("div", {
+    className: "config-row"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "config-label"
+  }, "Auto Allocate"), /*#__PURE__*/React.createElement("div", {
+    className: "config-sub"
+  }, autoAlloc ? 'TC + Exec auto-assigned' : 'Allocate manually later')), /*#__PURE__*/React.createElement("div", {
+    className: "toggle-wrap"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "toggle-opt",
+    style: autoAlloc ? {
+      background: 'var(--green)',
+      color: '#fff'
+    } : {},
+    onClick: () => setAutoAlloc(true)
+  }, "Auto"), /*#__PURE__*/React.createElement("button", {
+    className: "toggle-opt",
+    style: !autoAlloc ? {
+      background: 'var(--amber)',
+      color: '#fff'
+    } : {},
+    onClick: () => setAutoAlloc(false)
+  }, "Manual"))), /*#__PURE__*/React.createElement("div", {
+    className: "config-row col"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "config-label"
+  }, "Batch Label"), /*#__PURE__*/React.createElement("input", {
+    className: "batch-input",
+    value: batchNo,
+    onChange: e => setBatchNo(e.target.value.toUpperCase()),
+    placeholder: Utils.genBatch(city)
+  }))), (step === 'idle' || step === 'confirm') && /*#__PURE__*/React.createElement("button", {
+    className: "btn-primary",
+    onClick: handleRun,
+    disabled: !parsed || step === 'parsing'
+  }, !parsed ? '📂 Select a file to continue' : `🚀 Run Pipeline — ${parsed.mapped} accounts`), showConfirm && /*#__PURE__*/React.createElement("div", {
+    className: "confirm-overlay",
+    onClick: () => setShowConfirm(false)
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "confirm-sheet",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "confirm-title"
+  }, "\u26A0\uFE0F Replace Mode"), /*#__PURE__*/React.createElement("div", {
+    className: "confirm-body"
+  }, "This will ", /*#__PURE__*/React.createElement("strong", null, "clear TC_Base_Clean for ", city), " before uploading ", parsed?.mapped, " new accounts. This cannot be undone."), /*#__PURE__*/React.createElement("div", {
+    className: "confirm-actions"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "confirm-cancel",
+    onClick: () => setShowConfirm(false)
+  }, "Cancel"), /*#__PURE__*/React.createElement("button", {
+    className: "confirm-proceed",
+    onClick: doRun
+  }, "Yes, Replace")))));
 };
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 //  👥 TEAM TAB
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-const TeamTab = ({ session }) => {
-  const {data:team, loading, refresh} = useApiData(session,'get_team_performance',{city:session.city});
-  const {data:lb}                     = useApiData(session,'get_leaderboard',{city:session.city});
-
-  const idleTCs = useMemo(()=>team?team.filter(t=>(t.callsToday||0)===0):[], [team]);
-  const maxColl = useMemo(()=>lb?Math.max(...lb.map(t=>t.mtdCollected||0),1):1, [lb]);
-
-  return (
-    <div className="wrap">
-
-      {/* Idle alert */}
-      {!loading && idleTCs.length > 0 && (
-        <div className="idle-card">
-          <div className="idle-title">🔔 No calls logged today</div>
-          {idleTCs.map((tc,i)=>(
-            <div key={i} className="idle-item">
-              <div className="idle-avatar">{Utils.initials(tc.name)}</div>
-              <div>
-                <div style={{fontSize:13,fontWeight:700}}>{tc.name}</div>
-                <div className="idle-since">{tc.staffId} · {tc.total||0} assigned</div>
-              </div>
-              <span className="badge red">Idle</span>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Leaderboard */}
-      <div className="section-title">🏆 MTD Leaderboard</div>
-      {loading ? [1,2,3].map(i=><Skel key={i} h={64} mb={8}/>) : (
-        lb?.map((tc,i)=>(
-          <div key={i} className={`lb-row${tc.staffId===session.staffId?' lb-me':''}`}>
-            <div className={`lb-rank${i<3?' r'+(i+1):' rx'}`}>{i<3?['🥇','🥈','🥉'][i]:i+1}</div>
-            <div className="lb-info">
-              <div className="lb-name">{tc.name}{tc.staffId===session.staffId&&<span className="me-tag">YOU</span>}</div>
-              <div className="lb-id">{tc.staffId} · ₹{tc.mtdEarned||0}</div>
-            </div>
-            <div className="lb-bar-wrap"><div className="lb-bar" style={{width:Math.round((tc.mtdCollected/maxColl)*100)+'%'}}/></div>
-            <div className="lb-count">{tc.mtdCollected||0}</div>
-          </div>
-        ))
-      )}
-
-      {/* Per TC stats */}
-      <div className="section-title" style={{marginTop:8}}>📊 Team Details</div>
-      {loading ? [1,2].map(i=><Skel key={i} h={80} mb={8}/>) : (
-        team?.map((tc,i)=>(
-          <div key={i} className="card" style={{marginBottom:10}}>
-            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:8}}>
-              <div>
-                <div style={{fontFamily:'var(--fh)',fontSize:14,fontWeight:700}}>{tc.name}</div>
-                <div style={{fontSize:11,fontFamily:'var(--fm)',color:'var(--text3)'}}>{tc.staffId}</div>
-              </div>
-              <span className={`badge ${(tc.callsToday||0)>0?'green':'red'}`}>{(tc.callsToday||0)>0?'Active today':'Idle today'}</span>
-            </div>
-            <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:4,textAlign:'center'}}>
-              {[
-                {l:'Assigned',  v:tc.total||0},
-                {l:'Called',    v:tc.called||0},
-                {l:'Appt',      v:tc.apptFixed||0},
-                {l:'Collected', v:tc.mtdCollected||0},
-              ].map(s=>(
-                <div key={s.l} style={{background:'var(--bg3)',borderRadius:8,padding:'8px 4px'}}>
-                  <div style={{fontFamily:'var(--fh)',fontSize:16,fontWeight:800,color:'var(--text)'}}>{s.v}</div>
-                  <div style={{fontSize:9,color:'var(--text3)',fontFamily:'var(--fm)',textTransform:'uppercase'}}>{s.l}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))
-      )}
-    </div>
-  );
+const TeamTab = ({
+  session
+}) => {
+  // admin_init returns team + leaderboard — use it if already cached by HomeTab
+  const {
+    data: initData,
+    loading,
+    refresh
+  } = useApiData(session, 'admin_init', {
+    city: session.city
+  });
+  const team = initData?.teamPerf || [];
+  const lb = initData?.leaderboard || [];
+  const idleTCs = useMemo(() => team ? team.filter(t => (t.callsToday || 0) === 0) : [], [team]);
+  const maxColl = useMemo(() => lb ? Math.max(...lb.map(t => t.mtdCollected || 0), 1) : 1, [lb]);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "wrap"
+  }, !loading && idleTCs.length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "idle-card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "idle-title"
+  }, "\uD83D\uDD14 No calls logged today"), idleTCs.map((tc, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "idle-item"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "idle-avatar"
+  }, Utils.initials(tc.name)), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      fontWeight: 700
+    }
+  }, tc.name), /*#__PURE__*/React.createElement("div", {
+    className: "idle-since"
+  }, tc.staffId, " \xB7 ", tc.total || 0, " assigned")), /*#__PURE__*/React.createElement("span", {
+    className: "badge red"
+  }, "Idle")))), /*#__PURE__*/React.createElement("div", {
+    className: "section-title"
+  }, "\uD83C\uDFC6 MTD Leaderboard"), loading ? [1, 2, 3].map(i => /*#__PURE__*/React.createElement(Skel, {
+    key: i,
+    h: 64,
+    mb: 8
+  })) : lb?.map((tc, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: `lb-row${tc.staffId === session.staffId ? ' lb-me' : ''}`
+  }, /*#__PURE__*/React.createElement("div", {
+    className: `lb-rank${i < 3 ? ' r' + (i + 1) : ' rx'}`
+  }, i < 3 ? ['🥇', '🥈', '🥉'][i] : i + 1), /*#__PURE__*/React.createElement("div", {
+    className: "lb-info"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "lb-name"
+  }, tc.name, tc.staffId === session.staffId && /*#__PURE__*/React.createElement("span", {
+    className: "me-tag"
+  }, "YOU")), /*#__PURE__*/React.createElement("div", {
+    className: "lb-id"
+  }, tc.staffId, " \xB7 \u20B9", tc.mtdEarned || 0)), /*#__PURE__*/React.createElement("div", {
+    className: "lb-bar-wrap"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "lb-bar",
+    style: {
+      width: Math.round(tc.mtdCollected / maxColl * 100) + '%'
+    }
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "lb-count"
+  }, tc.mtdCollected || 0))), /*#__PURE__*/React.createElement("div", {
+    className: "section-title",
+    style: {
+      marginTop: 8
+    }
+  }, "\uD83D\uDCCA Team Details"), loading ? [1, 2].map(i => /*#__PURE__*/React.createElement(Skel, {
+    key: i,
+    h: 80,
+    mb: 8
+  })) : team?.map((tc, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "card",
+    style: {
+      marginBottom: 10
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginBottom: 8
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: 'var(--fh)',
+      fontSize: 14,
+      fontWeight: 700
+    }
+  }, tc.name), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      fontFamily: 'var(--fm)',
+      color: 'var(--text3)'
+    }
+  }, tc.staffId)), /*#__PURE__*/React.createElement("span", {
+    className: `badge ${(tc.callsToday || 0) > 0 ? 'green' : 'red'}`
+  }, (tc.callsToday || 0) > 0 ? 'Active today' : 'Idle today')), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(4,1fr)',
+      gap: 4,
+      textAlign: 'center'
+    }
+  }, [{
+    l: 'Assigned',
+    v: tc.total || 0
+  }, {
+    l: 'Called',
+    v: tc.called || 0
+  }, {
+    l: 'Appt',
+    v: tc.apptFixed || 0
+  }, {
+    l: 'Collected',
+    v: tc.mtdCollected || 0
+  }].map(s => /*#__PURE__*/React.createElement("div", {
+    key: s.l,
+    style: {
+      background: 'var(--bg3)',
+      borderRadius: 8,
+      padding: '8px 4px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: 'var(--fh)',
+      fontSize: 16,
+      fontWeight: 800,
+      color: 'var(--text)'
+    }
+  }, s.v), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      color: 'var(--text3)',
+      fontFamily: 'var(--fm)',
+      textTransform: 'uppercase'
+    }
+  }, s.l)))))));
 };
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 //  📋 PENDING TAB
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-const PendingTab = ({ session }) => {
+const PendingTab = ({
+  session
+}) => {
   const [filter, setFilter] = useState('ALL');
-  const {data:accounts, loading, refresh} = useApiData(session,'get_tc_accounts',{city:session.city,staffId:'ALL'});
-
+  const {
+    data: accounts,
+    loading,
+    refresh
+  } = useApiData(session, 'get_tc_accounts', {
+    city: session.city,
+    staffId: 'ALL'
+  });
   const today = Utils.today();
-
-  const filtered = useMemo(()=>{
-    if(!accounts)return[];
-    return accounts.filter(a=>{
-      const terminal=['COLLECTED','NR_OWN','NR_WRONG_NO','NR_ADDR','STRIKE_3'];
-      if(terminal.includes(a.status))return false;
-      if(filter==='ALL')return true;
-      if(filter==='AGING')return Utils.hoursAgo(a.pendingSince||a.pending_since)>=48;
-      if(filter==='OVERDUE')return a.apptDate&&a.apptDate<today&&a.status==='APPT_FIXED';
-      if(filter==='ISSUES')return a.status.startsWith('ISSUE_');
-      return a.status===filter;
+  const filtered = useMemo(() => {
+    if (!accounts) return [];
+    return accounts.filter(a => {
+      const terminal = ['COLLECTED', 'NR_OWN', 'NR_WRONG_NO', 'NR_ADDR', 'STRIKE_3'];
+      if (terminal.includes(a.status)) return false;
+      if (filter === 'ALL') return true;
+      if (filter === 'AGING') return Utils.hoursAgo(a.pendingSince || a.pending_since) >= 48;
+      if (filter === 'OVERDUE') return a.apptDate && a.apptDate < today && a.status === 'APPT_FIXED';
+      if (filter === 'ISSUES') return a.status.startsWith('ISSUE_');
+      return a.status === filter;
     });
-  },[accounts,filter,today]);
-
-  const chips=[
-    {id:'ALL',label:'All'},
-    {id:'AGING',label:'⏱ Aging >48h'},
-    {id:'OVERDUE',label:'🔴 Overdue'},
-    {id:'APPT_FIXED',label:'Appt Fixed'},
-    {id:'FRESH',label:'Fresh'},
-    {id:'ISSUES',label:'Issues'},
-  ];
-
-  const getUrgency=(a)=>{
-    const h=Utils.hoursAgo(a.pendingSince||a.pending_since);
-    if(a.apptDate&&a.apptDate<today&&a.status==='APPT_FIXED')return'overdue';
-    if(h>=48)return'aging';
-    return'normal';
+  }, [accounts, filter, today]);
+  const chips = [{
+    id: 'ALL',
+    label: 'All'
+  }, {
+    id: 'AGING',
+    label: '⏱ Aging >48h'
+  }, {
+    id: 'OVERDUE',
+    label: '🔴 Overdue'
+  }, {
+    id: 'APPT_FIXED',
+    label: 'Appt Fixed'
+  }, {
+    id: 'FRESH',
+    label: 'Fresh'
+  }, {
+    id: 'ISSUES',
+    label: 'Issues'
+  }];
+  const getUrgency = a => {
+    const h = Utils.hoursAgo(a.pendingSince || a.pending_since);
+    if (a.apptDate && a.apptDate < today && a.status === 'APPT_FIXED') return 'overdue';
+    if (h >= 48) return 'aging';
+    return 'normal';
   };
-
-  return (
-    <div className="wrap">
-      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
-        <div className="section-title" style={{margin:0}}>📋 Pending Accounts</div>
-        <button onClick={refresh} style={{background:'none',border:'none',cursor:'pointer',fontSize:13,color:'var(--accent)',fontFamily:'var(--fm)'}}>↻ Refresh</button>
-      </div>
-
-      <div className="filter-chips">
-        {chips.map(c=><div key={c.id} className={`chip${filter===c.id?' on':''}`} onClick={()=>setFilter(c.id)}>{c.label}</div>)}
-      </div>
-
-      <div style={{fontSize:11,color:'var(--text3)',fontFamily:'var(--fm)',marginBottom:12}}>
-        {loading?'Loading...':filtered.length+' accounts'}
-      </div>
-
-      {loading?[1,2,3].map(i=><Skel key={i} h={100} mb={10}/>):(
-        filtered.length===0
-          ? <div style={{textAlign:'center',padding:'40px 20px',color:'var(--text3)',fontSize:13,fontFamily:'var(--fm)'}}>No accounts match this filter</div>
-          : filtered.slice(0,30).map((a,i)=>{
-            const urg=getUrgency(a);
-            const ageH=Utils.hoursAgo(a.pendingSince||a.pending_since);
-            return(
-              <div key={i} className={`pending-card ${urg}`}>
-                <div className="pc-top">
-                  <div>
-                    <div className="pc-accno">{a.accountNo||a.account_no}</div>
-                    <div className="pc-name">{a.name}</div>
-                    <div className="pc-phone">{a.mobile}</div>
-                  </div>
-                  <span className={`badge ${urg==='overdue'?'red':urg==='aging'?'amber':'blue'}`}>
-                    {urg==='overdue'?'Overdue':urg==='aging'?Utils.fmtHours(ageH):STATUS_LABELS[a.status]||a.status}
-                  </span>
-                </div>
-                <div className="pc-meta">
-                  <span className="pc-area">{a.area}</span>
-                  {a.apptDate&&<span className="pc-area" style={{color:'var(--green)'}}>📅 {a.apptDate}</span>}
-                  {a.tcId&&<span className="pc-area">{a.tcId}</span>}
-                  {a.execId&&<span className="pc-area">{a.execId}</span>}
-                </div>
-              </div>
-            );
-          })
-      )}
-      {!loading&&filtered.length>30&&<div style={{textAlign:'center',fontSize:12,color:'var(--text3)',fontFamily:'var(--fm)',paddingBottom:8}}>Showing 30 of {filtered.length} · See full list in Accounts module</div>}
-    </div>
-  );
+  return /*#__PURE__*/React.createElement("div", {
+    className: "wrap"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: 12
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "section-title",
+    style: {
+      margin: 0
+    }
+  }, "\uD83D\uDCCB Pending Accounts"), /*#__PURE__*/React.createElement("button", {
+    onClick: refresh,
+    style: {
+      background: 'none',
+      border: 'none',
+      cursor: 'pointer',
+      fontSize: 13,
+      color: 'var(--accent)',
+      fontFamily: 'var(--fm)'
+    }
+  }, "\u21BB Refresh")), /*#__PURE__*/React.createElement("div", {
+    className: "filter-chips"
+  }, chips.map(c => /*#__PURE__*/React.createElement("div", {
+    key: c.id,
+    className: `chip${filter === c.id ? ' on' : ''}`,
+    onClick: () => setFilter(c.id)
+  }, c.label))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: 'var(--text3)',
+      fontFamily: 'var(--fm)',
+      marginBottom: 12
+    }
+  }, loading ? 'Loading...' : filtered.length + ' accounts'), loading ? [1, 2, 3].map(i => /*#__PURE__*/React.createElement(Skel, {
+    key: i,
+    h: 100,
+    mb: 10
+  })) : filtered.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: 'center',
+      padding: '40px 20px',
+      color: 'var(--text3)',
+      fontSize: 13,
+      fontFamily: 'var(--fm)'
+    }
+  }, "No accounts match this filter") : filtered.slice(0, 30).map((a, i) => {
+    const urg = getUrgency(a);
+    const ageH = Utils.hoursAgo(a.pendingSince || a.pending_since);
+    return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      className: `pending-card ${urg}`
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "pc-top"
+    }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+      className: "pc-accno"
+    }, a.accountNo || a.account_no), /*#__PURE__*/React.createElement("div", {
+      className: "pc-name"
+    }, a.name), /*#__PURE__*/React.createElement("div", {
+      className: "pc-phone"
+    }, a.mobile)), /*#__PURE__*/React.createElement("span", {
+      className: `badge ${urg === 'overdue' ? 'red' : urg === 'aging' ? 'amber' : 'blue'}`
+    }, urg === 'overdue' ? 'Overdue' : urg === 'aging' ? Utils.fmtHours(ageH) : STATUS_LABELS[a.status] || a.status)), /*#__PURE__*/React.createElement("div", {
+      className: "pc-meta"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "pc-area"
+    }, a.area), a.apptDate && /*#__PURE__*/React.createElement("span", {
+      className: "pc-area",
+      style: {
+        color: 'var(--green)'
+      }
+    }, "\uD83D\uDCC5 ", a.apptDate), a.tcId && /*#__PURE__*/React.createElement("span", {
+      className: "pc-area"
+    }, a.tcId), a.execId && /*#__PURE__*/React.createElement("span", {
+      className: "pc-area"
+    }, a.execId)));
+  }), !loading && filtered.length > 30 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: 'center',
+      fontSize: 12,
+      color: 'var(--text3)',
+      fontFamily: 'var(--fm)',
+      paddingBottom: 8
+    }
+  }, "Showing 30 of ", filtered.length, " \xB7 See full list in Accounts module"));
 };
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 //  ⚠️ ISSUES TAB
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-const IssuesTab = ({ session, showToast }) => {
+const IssuesTab = ({
+  session,
+  showToast
+}) => {
   const [typeFilter, setTypeFilter] = useState('ALL');
   // Fetch issues via get_admin_overview or dedicated action
   // For now using mock structure — Phase 7 wires to real issues API
-  const {data:rawIssues, loading, refresh} = useApiData(session,'get_tc_accounts',{city:session.city,staffId:'ALL'});
+  const {
+    data: rawIssues,
+    loading,
+    refresh
+  } = useApiData(session, 'get_tc_accounts', {
+    city: session.city,
+    staffId: 'ALL'
+  });
 
   // Extract issue-type accounts from TC accounts
-  const issues = useMemo(()=>{
-    if(!rawIssues)return[];
-    return rawIssues.filter(a=>a.status&&a.status.startsWith('ISSUE_')).map(a=>({
-      issueId:      a.accountNo||a.account_no,
-      accountNo:    a.accountNo||a.account_no,
+  const issues = useMemo(() => {
+    if (!rawIssues) return [];
+    return rawIssues.filter(a => a.status && a.status.startsWith('ISSUE_')).map(a => ({
+      issueId: a.accountNo || a.account_no,
+      accountNo: a.accountNo || a.account_no,
       customerName: a.name,
-      mobile:       a.mobile,
-      area:         a.area,
-      city:         a.city||session.city,
-      issueType:    a.status,
-      tcRemark:     a.tcRemark||a.tc_remark||'',
-      status:       'Open',
-      createdAt:    a.pendingSince||a.pending_since||'',
+      mobile: a.mobile,
+      area: a.area,
+      city: a.city || session.city,
+      issueType: a.status,
+      tcRemark: a.tcRemark || a.tc_remark || '',
+      status: 'Open',
+      createdAt: a.pendingSince || a.pending_since || ''
     }));
-  },[rawIssues]);
-
-  const filtered = useMemo(()=>{
-    if(typeFilter==='ALL')return issues;
-    return issues.filter(i=>i.issueType===typeFilter);
-  },[issues,typeFilter]);
+  }, [rawIssues]);
+  const filtered = useMemo(() => {
+    if (typeFilter === 'ALL') return issues;
+    return issues.filter(i => i.issueType === typeFilter);
+  }, [issues, typeFilter]);
 
   // Count by type
-  const counts = useMemo(()=>{
-    const c={};
-    ISSUE_TYPES.forEach(t=>{c[t.id]=t.id==='ALL'?issues.length:issues.filter(i=>i.issueType===t.id).length;});
+  const counts = useMemo(() => {
+    const c = {};
+    ISSUE_TYPES.forEach(t => {
+      c[t.id] = t.id === 'ALL' ? issues.length : issues.filter(i => i.issueType === t.id).length;
+    });
     return c;
-  },[issues]);
-
-  return (
-    <div className="wrap">
-      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
-        <div className="section-title" style={{margin:0}}>⚠️ Open Issues</div>
-        <button onClick={()=>ExcelExport.downloadIssuesReport(issues)} style={{background:'var(--green)',border:'none',borderRadius:8,color:'#fff',padding:'6px 12px',fontFamily:'var(--fh)',fontSize:11,fontWeight:700,cursor:'pointer'}}>
-          📥 ACT Report
-        </button>
-      </div>
-
-      {/* Type filter chips */}
-      <div className="issue-type-tabs">
-        {ISSUE_TYPES.map(t=>(
-          <div key={t.id} className={`it-chip${typeFilter===t.id?' on':''}`} onClick={()=>setTypeFilter(t.id)}>
-            {t.label} {counts[t.id]>0&&<span style={{fontFamily:'var(--fm)',fontWeight:800}}>({counts[t.id]})</span>}
-          </div>
-        ))}
-      </div>
-
-      {/* Summary card */}
-      {!loading && issues.length > 0 && (
-        <div className="card" style={{marginBottom:14}}>
-          <div className="card-title">📊 Issue Summary</div>
-          {ISSUE_TYPES.slice(1).map(t=>(
-            counts[t.id]>0 && (
-              <div key={t.id} className="row">
-                <span className="row-label">{t.label}</span>
-                <span className={`badge ${t.id==='ISSUE_JBOX'?'purple':t.id==='ISSUE_REFUND'?'amber':'blue'}`}>{counts[t.id]}</span>
-              </div>
-            )
-          ))}
-        </div>
-      )}
-
-      <div style={{fontSize:11,color:'var(--text3)',fontFamily:'var(--fm)',marginBottom:12}}>
-        {loading?'Loading...':filtered.length+' issues'}
-      </div>
-
-      {loading?[1,2,3].map(i=><Skel key={i} h={110} mb={10}/>):(
-        filtered.length===0
-          ? <div style={{textAlign:'center',padding:'40px 20px',color:'var(--text3)',fontSize:13,fontFamily:'var(--fm)'}}>{issues.length===0?'No open issues ✅':'No issues of this type'}</div>
-          : filtered.map((issue,i)=>(
-            <div key={i} className="issue-card">
-              <span className={`issue-type-badge ${ISSUE_SHORT[issue.issueType]||'ISSUE'}`}>
-                {issue.issueType?.replace('ISSUE_','')?.replace('_',' ')||'Issue'}
-              </span>
-              <div style={{fontFamily:'var(--fh)',fontSize:14,fontWeight:800,color:'var(--text)',marginBottom:2}}>{issue.accountNo}</div>
-              <div style={{fontSize:14,fontWeight:700,marginBottom:2}}>{issue.customerName}</div>
-              <div style={{fontFamily:'var(--fm)',fontSize:12,color:'var(--green)',marginBottom:4}}>{issue.mobile}</div>
-              {issue.tcRemark&&<div className="issue-remark">💬 {issue.tcRemark}</div>}
-              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:6}}>
-                <div>
-                  <span className="pc-area">{issue.area}</span>
-                </div>
-                <button className="resolve-btn" onClick={()=>showToast('Issue resolution in Phase 7','warning')}>
-                  ✓ Resolve
-                </button>
-              </div>
-            </div>
-          ))
-      )}
-
-      {/* Download button */}
-      {issues.length > 0 && (
-        <button className="btn-excel" onClick={()=>ExcelExport.downloadIssuesReport(issues)}>
-          📥 Download ACT Issues Report (.xlsx)
-        </button>
-      )}
-    </div>
-  );
+  }, [issues]);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "wrap"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: 12
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "section-title",
+    style: {
+      margin: 0
+    }
+  }, "\u26A0\uFE0F Open Issues"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => ExcelExport.downloadIssuesReport(issues),
+    style: {
+      background: 'var(--green)',
+      border: 'none',
+      borderRadius: 8,
+      color: '#fff',
+      padding: '6px 12px',
+      fontFamily: 'var(--fh)',
+      fontSize: 11,
+      fontWeight: 700,
+      cursor: 'pointer'
+    }
+  }, "\uD83D\uDCE5 ACT Report")), /*#__PURE__*/React.createElement("div", {
+    className: "issue-type-tabs"
+  }, ISSUE_TYPES.map(t => /*#__PURE__*/React.createElement("div", {
+    key: t.id,
+    className: `it-chip${typeFilter === t.id ? ' on' : ''}`,
+    onClick: () => setTypeFilter(t.id)
+  }, t.label, " ", counts[t.id] > 0 && /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: 'var(--fm)',
+      fontWeight: 800
+    }
+  }, "(", counts[t.id], ")")))), !loading && issues.length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "card",
+    style: {
+      marginBottom: 14
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-title"
+  }, "\uD83D\uDCCA Issue Summary"), ISSUE_TYPES.slice(1).map(t => counts[t.id] > 0 && /*#__PURE__*/React.createElement("div", {
+    key: t.id,
+    className: "row"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "row-label"
+  }, t.label), /*#__PURE__*/React.createElement("span", {
+    className: `badge ${t.id === 'ISSUE_JBOX' ? 'purple' : t.id === 'ISSUE_REFUND' ? 'amber' : 'blue'}`
+  }, counts[t.id])))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: 'var(--text3)',
+      fontFamily: 'var(--fm)',
+      marginBottom: 12
+    }
+  }, loading ? 'Loading...' : filtered.length + ' issues'), loading ? [1, 2, 3].map(i => /*#__PURE__*/React.createElement(Skel, {
+    key: i,
+    h: 110,
+    mb: 10
+  })) : filtered.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: 'center',
+      padding: '40px 20px',
+      color: 'var(--text3)',
+      fontSize: 13,
+      fontFamily: 'var(--fm)'
+    }
+  }, issues.length === 0 ? 'No open issues ✅' : 'No issues of this type') : filtered.map((issue, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "issue-card"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: `issue-type-badge ${ISSUE_SHORT[issue.issueType] || 'ISSUE'}`
+  }, issue.issueType?.replace('ISSUE_', '')?.replace('_', ' ') || 'Issue'), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: 'var(--fh)',
+      fontSize: 14,
+      fontWeight: 800,
+      color: 'var(--text)',
+      marginBottom: 2
+    }
+  }, issue.accountNo), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 14,
+      fontWeight: 700,
+      marginBottom: 2
+    }
+  }, issue.customerName), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: 'var(--fm)',
+      fontSize: 12,
+      color: 'var(--green)',
+      marginBottom: 4
+    }
+  }, issue.mobile), issue.tcRemark && /*#__PURE__*/React.createElement("div", {
+    className: "issue-remark"
+  }, "\uD83D\uDCAC ", issue.tcRemark), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginTop: 6
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
+    className: "pc-area"
+  }, issue.area)), /*#__PURE__*/React.createElement("button", {
+    className: "resolve-btn",
+    onClick: () => showToast('Issue resolution in Phase 7', 'warning')
+  }, "\u2713 Resolve")))), issues.length > 0 && /*#__PURE__*/React.createElement("button", {
+    className: "btn-excel",
+    onClick: () => ExcelExport.downloadIssuesReport(issues)
+  }, "\uD83D\uDCE5 Download ACT Issues Report (.xlsx)"));
 };
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 //  ⚙️ CONTROL TAB
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-const ControlTab = ({ session, showToast }) => {
+const ControlTab = ({
+  session,
+  showToast
+}) => {
   const [showRolloverConfirm, setShowRolloverConfirm] = useState(false);
-  const [rolloverPreview,     setRolloverPreview]     = useState(null);
-  const [rolling,             setRolling]             = useState(false);
-  const {data:cooling, loading:coolLoad, refresh:coolRefresh} = useApiData(session,'get_cooling_pool',{city:session.city});
-
-  const loadPreview = async() => {
-    try{
-      const d=await Api.get({action:'preview_rollover',token:session.token,city:session.city});
-      setRolloverPreview(d);setShowRolloverConfirm(true);
-    }catch(e){showToast(e.message,'error');}
+  const [rolloverPreview, setRolloverPreview] = useState(null);
+  const [rolling, setRolling] = useState(false);
+  const {
+    data: cooling,
+    loading: coolLoad,
+    refresh: coolRefresh
+  } = useApiData(session, 'get_cooling_pool', {
+    city: session.city
+  });
+  const loadPreview = async () => {
+    try {
+      const d = await Api.get({
+        action: 'preview_rollover',
+        token: session.token,
+        city: session.city
+      });
+      setRolloverPreview(d);
+      setShowRolloverConfirm(true);
+    } catch (e) {
+      showToast(e.message, 'error');
+    }
   };
-
-  const doRollover = async() => {
-    setRolling(true);setShowRolloverConfirm(false);
-    try{
-      await Api.post({action:'run_rollover',token:session.token,city:session.city});
-      showToast('Monthly rollover complete!','success');
+  const doRollover = async () => {
+    setRolling(true);
+    setShowRolloverConfirm(false);
+    try {
+      await Api.post({
+        action: 'run_rollover',
+        token: session.token,
+        city: session.city
+      });
+      showToast('Monthly rollover complete!', 'success');
       setRolloverPreview(null);
-    }catch(e){showToast(e.message,'error');}
-    finally{setRolling(false);}
+    } catch (e) {
+      showToast(e.message, 'error');
+    } finally {
+      setRolling(false);
+    }
   };
-
-  const releaseAccount = async(accountNo) => {
-    try{
-      await Api.post({action:'release_cooling',token:session.token,accountNo,city:session.city});
-      showToast(accountNo+' released from cooling','success');
+  const releaseAccount = async accountNo => {
+    try {
+      await Api.post({
+        action: 'release_cooling',
+        token: session.token,
+        accountNo,
+        city: session.city
+      });
+      showToast(accountNo + ' released from cooling', 'success');
       coolRefresh();
-    }catch(e){showToast(e.message,'error');}
+    } catch (e) {
+      showToast(e.message, 'error');
+    }
   };
-
   const today = Utils.today();
-
-  return (
-    <div className="wrap">
-
-      {/* Cooling Pool */}
-      <div className="section-title">❄️ Cooling Pool</div>
-      {coolLoad?[1,2].map(i=><Skel key={i} h={80} mb={8}/>):(
-        !cooling||cooling.length===0
-          ? <div className="alert-card green" style={{marginBottom:14}}><div className="alert-icon">✅</div><div><div className="alert-title">Cooling pool is empty</div><div className="alert-sub">No accounts in cooling</div></div></div>
-          : cooling.filter(a=>a.state!=='Released').map((a,i)=>{
-            const overdue=a.releaseAfter&&a.releaseAfter<today;
-            return(
-              <div key={i} className={`cooling-card${overdue?' overdue':''}`}>
-                <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:6}}>
-                  <div>
-                    <div style={{fontFamily:'var(--fh)',fontSize:14,fontWeight:800}}>{a.accountNo}</div>
-                    <div style={{fontSize:13,fontWeight:600,marginBottom:2}}>{a.name}</div>
-                    <div style={{fontSize:11,fontFamily:'var(--fm)',color:'var(--text3)'}}>{a.reason} · Release: {a.releaseAfter}</div>
-                  </div>
-                  <div style={{textAlign:'right'}}>
-                    <div className={`days-left ${overdue?'over':'ok'}`}>{overdue?'Overdue':(a.daysLeft||0)+'d'}</div>
-                    <button className="release-btn" onClick={()=>releaseAccount(a.accountNo)}>Release</button>
-                  </div>
-                </div>
-                <div className="pc-meta"><span className="pc-area">{a.area}</span><span className="pc-area">{a.assignedTC}</span></div>
-              </div>
-            );
-          })
-      )}
-
-      {/* Monthly Rollover */}
-      <div className="section-title" style={{marginTop:8}}>🗂️ Monthly Rollover</div>
-      <div className="card">
-        <div className="card-title">End of Month Archive</div>
-        <div className="row"><span className="row-label">Archives</span><span className="row-val">TC_Base_Raw · TC_Base_Clean · TC_Calls</span></div>
-        <div className="row"><span className="row-label">Preserved</span><span className="row-val green">Pending · Collected · Historic_Memory</span></div>
-        <div className="row"><span className="row-label">Resets</span><span className="row-val amber">MTD incentive counts</span></div>
-      </div>
-
-      <button className="btn-primary" onClick={loadPreview} disabled={rolling}>
-        {rolling?<><div className="spinner"/>Running Rollover...</>:'🗂️ Preview & Run Monthly Rollover'}
-      </button>
-
-      {showRolloverConfirm && rolloverPreview && (
-        <div className="confirm-overlay" onClick={()=>setShowRolloverConfirm(false)}>
-          <div className="confirm-sheet" onClick={e=>e.stopPropagation()}>
-            <div className="confirm-title">🗂️ Monthly Rollover Preview</div>
-            <div className="rollover-preview">
-              <div className="rollover-row"><span>City</span><strong>{rolloverPreview.city}</strong></div>
-              <div className="rollover-row"><span>To Archive</span><strong>{rolloverPreview.toArchive} rows</strong></div>
-              <div className="rollover-row"><span>Collected</span><strong style={{color:'var(--green)'}}>{rolloverPreview.collected}</strong></div>
-              <div className="rollover-row"><span>Pending (kept)</span><strong style={{color:'var(--amber)'}}>{rolloverPreview.pending}</strong></div>
-              <div className="rollover-row"><span>Historic will grow by</span><strong>{rolloverPreview.historicWillGrow}</strong></div>
-            </div>
-            <div className="confirm-body" style={{marginBottom:16}}>This will archive this month's data and reset the pipeline. Pending accounts are preserved.</div>
-            <div className="confirm-actions">
-              <button className="confirm-cancel" onClick={()=>setShowRolloverConfirm(false)}>Cancel</button>
-              <button className="confirm-proceed" onClick={doRollover}>Run Rollover</button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
+  return /*#__PURE__*/React.createElement("div", {
+    className: "wrap"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "section-title"
+  }, "\u2744\uFE0F Cooling Pool"), coolLoad ? [1, 2].map(i => /*#__PURE__*/React.createElement(Skel, {
+    key: i,
+    h: 80,
+    mb: 8
+  })) : !cooling || cooling.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    className: "alert-card green",
+    style: {
+      marginBottom: 14
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "alert-icon"
+  }, "\u2705"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "alert-title"
+  }, "Cooling pool is empty"), /*#__PURE__*/React.createElement("div", {
+    className: "alert-sub"
+  }, "No accounts in cooling"))) : cooling.filter(a => a.state !== 'Released').map((a, i) => {
+    const overdue = a.releaseAfter && a.releaseAfter < today;
+    return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      className: `cooling-card${overdue ? ' overdue' : ''}`
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        marginBottom: 6
+      }
+    }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontFamily: 'var(--fh)',
+        fontSize: 14,
+        fontWeight: 800
+      }
+    }, a.accountNo), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 13,
+        fontWeight: 600,
+        marginBottom: 2
+      }
+    }, a.name), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 11,
+        fontFamily: 'var(--fm)',
+        color: 'var(--text3)'
+      }
+    }, a.reason, " \xB7 Release: ", a.releaseAfter)), /*#__PURE__*/React.createElement("div", {
+      style: {
+        textAlign: 'right'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: `days-left ${overdue ? 'over' : 'ok'}`
+    }, overdue ? 'Overdue' : (a.daysLeft || 0) + 'd'), /*#__PURE__*/React.createElement("button", {
+      className: "release-btn",
+      onClick: () => releaseAccount(a.accountNo)
+    }, "Release"))), /*#__PURE__*/React.createElement("div", {
+      className: "pc-meta"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "pc-area"
+    }, a.area), /*#__PURE__*/React.createElement("span", {
+      className: "pc-area"
+    }, a.assignedTC)));
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "section-title",
+    style: {
+      marginTop: 8
+    }
+  }, "\uD83D\uDDC2\uFE0F Monthly Rollover"), /*#__PURE__*/React.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-title"
+  }, "End of Month Archive"), /*#__PURE__*/React.createElement("div", {
+    className: "row"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "row-label"
+  }, "Archives"), /*#__PURE__*/React.createElement("span", {
+    className: "row-val"
+  }, "TC_Base_Raw \xB7 TC_Base_Clean \xB7 TC_Calls")), /*#__PURE__*/React.createElement("div", {
+    className: "row"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "row-label"
+  }, "Preserved"), /*#__PURE__*/React.createElement("span", {
+    className: "row-val green"
+  }, "Pending \xB7 Collected \xB7 Historic_Memory")), /*#__PURE__*/React.createElement("div", {
+    className: "row"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "row-label"
+  }, "Resets"), /*#__PURE__*/React.createElement("span", {
+    className: "row-val amber"
+  }, "MTD incentive counts"))), /*#__PURE__*/React.createElement("button", {
+    className: "btn-primary",
+    onClick: loadPreview,
+    disabled: rolling
+  }, rolling ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "spinner"
+  }), "Running Rollover...") : '🗂️ Preview & Run Monthly Rollover'), showRolloverConfirm && rolloverPreview && /*#__PURE__*/React.createElement("div", {
+    className: "confirm-overlay",
+    onClick: () => setShowRolloverConfirm(false)
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "confirm-sheet",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "confirm-title"
+  }, "\uD83D\uDDC2\uFE0F Monthly Rollover Preview"), /*#__PURE__*/React.createElement("div", {
+    className: "rollover-preview"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "rollover-row"
+  }, /*#__PURE__*/React.createElement("span", null, "City"), /*#__PURE__*/React.createElement("strong", null, rolloverPreview.city)), /*#__PURE__*/React.createElement("div", {
+    className: "rollover-row"
+  }, /*#__PURE__*/React.createElement("span", null, "To Archive"), /*#__PURE__*/React.createElement("strong", null, rolloverPreview.toArchive, " rows")), /*#__PURE__*/React.createElement("div", {
+    className: "rollover-row"
+  }, /*#__PURE__*/React.createElement("span", null, "Collected"), /*#__PURE__*/React.createElement("strong", {
+    style: {
+      color: 'var(--green)'
+    }
+  }, rolloverPreview.collected)), /*#__PURE__*/React.createElement("div", {
+    className: "rollover-row"
+  }, /*#__PURE__*/React.createElement("span", null, "Pending (kept)"), /*#__PURE__*/React.createElement("strong", {
+    style: {
+      color: 'var(--amber)'
+    }
+  }, rolloverPreview.pending)), /*#__PURE__*/React.createElement("div", {
+    className: "rollover-row"
+  }, /*#__PURE__*/React.createElement("span", null, "Historic will grow by"), /*#__PURE__*/React.createElement("strong", null, rolloverPreview.historicWillGrow))), /*#__PURE__*/React.createElement("div", {
+    className: "confirm-body",
+    style: {
+      marginBottom: 16
+    }
+  }, "This will archive this month's data and reset the pipeline. Pending accounts are preserved."), /*#__PURE__*/React.createElement("div", {
+    className: "confirm-actions"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "confirm-cancel",
+    onClick: () => setShowRolloverConfirm(false)
+  }, "Cancel"), /*#__PURE__*/React.createElement("button", {
+    className: "confirm-proceed",
+    onClick: doRollover
+  }, "Run Rollover")))));
 };
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 //  🧑‍💼 STAFF TAB — Active/Leave toggle, City switch, Add staff
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-const StaffTab = ({ session, showToast }) => {
-  const [staffList,  setStaffList]  = useState([]);
-  const [loading,    setLoading]    = useState(true);
+const StaffTab = ({
+  session,
+  showToast
+}) => {
+  const [staffList, setStaffList] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [roleFilter, setRoleFilter] = useState('ALL');
   const [cityTarget, setCityTarget] = useState(null);
-  const [showAdd,    setShowAdd]    = useState(false);
-  const [form,       setForm]       = useState({
-    staffId:'', displayName:'', role:'TELECALLER', city:session.city, pin:'1234'
+  const [showAdd, setShowAdd] = useState(false);
+  const [form, setForm] = useState({
+    staffId: '',
+    displayName: '',
+    role: 'TELECALLER',
+    city: session.city,
+    pin: '1234'
   });
   const [adding, setAdding] = useState(false);
-
   const loadStaff = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await Api.get({ action:'get_staff_list', token:session.token, city:'', role:'' });
+      const data = await Api.get({
+        action: 'get_staff_list',
+        token: session.token,
+        city: '',
+        role: ''
+      });
       setStaffList(Array.isArray(data) ? data : []);
-    } catch(e) { showToast(e.message,'error'); }
-    finally { setLoading(false); }
+    } catch (e) {
+      showToast(e.message, 'error');
+    } finally {
+      setLoading(false);
+    }
   }, [session]);
-
-  useEffect(() => { loadStaff(); }, [loadStaff]);
-
-  const toggleActive = async (s) => {
+  useEffect(() => {
+    loadStaff();
+  }, [loadStaff]);
+  const toggleActive = async s => {
     try {
-      await Api.post({ action:'set_staff_active', token:session.token, staffId:s.staffId, city:s.city, active:!s.isActive });
+      await Api.post({
+        action: 'set_staff_active',
+        token: session.token,
+        staffId: s.staffId,
+        city: s.city,
+        active: !s.isActive
+      });
       showToast(s.displayName + (s.isActive ? ' marked on leave' : ' activated'), 'success');
       loadStaff();
-    } catch(e) { showToast(e.message,'error'); }
+    } catch (e) {
+      showToast(e.message, 'error');
+    }
   };
-
-  const switchCity = async (newCity) => {
+  const switchCity = async newCity => {
     if (!cityTarget) return;
     try {
-      await Api.post({ action:'update_tc_city', token:session.token, targetStaffId:cityTarget.staffId, newCity });
+      await Api.post({
+        action: 'update_tc_city',
+        token: session.token,
+        targetStaffId: cityTarget.staffId,
+        newCity
+      });
       showToast(cityTarget.name + ' moved to ' + newCity, 'success');
-      setCityTarget(null); loadStaff();
-    } catch(e) { showToast(e.message,'error'); setCityTarget(null); }
+      setCityTarget(null);
+      loadStaff();
+    } catch (e) {
+      showToast(e.message, 'error');
+      setCityTarget(null);
+    }
   };
-
-  const resetPin = async (s) => {
+  const resetPin = async s => {
     const newPin = prompt('New 4-digit PIN for ' + s.displayName + ':');
-    if (!newPin || String(newPin).length < 4) { showToast('PIN must be 4 digits','error'); return; }
+    if (!newPin || String(newPin).length < 4) {
+      showToast('PIN must be 4 digits', 'error');
+      return;
+    }
     try {
-      await Api.post({ action:'reset_pin', token:session.token, staffId:s.staffId, city:s.city, newPin });
-      showToast('PIN reset for ' + s.displayName,'success');
-    } catch(e) { showToast(e.message,'error'); }
+      await Api.post({
+        action: 'reset_pin',
+        token: session.token,
+        staffId: s.staffId,
+        city: s.city,
+        newPin
+      });
+      showToast('PIN reset for ' + s.displayName, 'success');
+    } catch (e) {
+      showToast(e.message, 'error');
+    }
   };
-
   const addStaff = async () => {
-    if (!form.staffId || !form.displayName) { showToast('Staff ID and Name required','error'); return; }
+    if (!form.staffId || !form.displayName) {
+      showToast('Staff ID and Name required', 'error');
+      return;
+    }
     setAdding(true);
     try {
-      await Api.post({ action:'create_staff', token:session.token, ...form });
-      showToast(form.displayName + ' added ✅','success');
-      setForm({ staffId:'', displayName:'', role:'TELECALLER', city:session.city, pin:'1234' });
-      setShowAdd(false); loadStaff();
-    } catch(e) { showToast(e.message,'error'); }
-    finally { setAdding(false); }
+      await Api.post({
+        action: 'create_staff',
+        token: session.token,
+        ...form
+      });
+      showToast(form.displayName + ' added ✅', 'success');
+      setForm({
+        staffId: '',
+        displayName: '',
+        role: 'TELECALLER',
+        city: session.city,
+        pin: '1234'
+      });
+      setShowAdd(false);
+      loadStaff();
+    } catch (e) {
+      showToast(e.message, 'error');
+    } finally {
+      setAdding(false);
+    }
   };
-
-  const ROLE_FILTERS  = [
-    {id:'ALL',label:'All'},
-    {id:'TELECALLER',label:'📞 TC'},
-    {id:'EXECUTIVE',label:'🚗 Exec'},
-    {id:'SUPERVISOR',label:'👁 Supervisor'},
-    {id:'ADMIN',label:'🔐 Admin'},
-  ];
-  const ROLE_OPTIONS = ['TELECALLER','EXECUTIVE','SUPERVISOR','ADMIN'];
-
-  const getAvClass = (role) => ({
-    TELECALLER:'av-tc', EXECUTIVE:'av-exec', SUPERVISOR:'av-sup', ADMIN:'av-admin'
-  }[role] || 'av-default');
-
+  const ROLE_FILTERS = [{
+    id: 'ALL',
+    label: 'All'
+  }, {
+    id: 'TELECALLER',
+    label: '📞 TC'
+  }, {
+    id: 'EXECUTIVE',
+    label: '🚗 Exec'
+  }, {
+    id: 'SUPERVISOR',
+    label: '👁 Supervisor'
+  }, {
+    id: 'ADMIN',
+    label: '🔐 Admin'
+  }];
+  const ROLE_OPTIONS = ['TELECALLER', 'EXECUTIVE', 'SUPERVISOR', 'ADMIN'];
+  const getAvClass = role => ({
+    TELECALLER: 'av-tc',
+    EXECUTIVE: 'av-exec',
+    SUPERVISOR: 'av-sup',
+    ADMIN: 'av-admin'
+  })[role] || 'av-default';
   const manageable = useMemo(() => staffList.filter(s => s.role !== 'OWNER'), [staffList]);
-  const filtered   = useMemo(() =>
-    roleFilter === 'ALL' ? manageable : manageable.filter(s => s.role === roleFilter),
-    [manageable, roleFilter]
-  );
-
-  const activeCount   = manageable.filter(s => s.isActive).length;
+  const filtered = useMemo(() => roleFilter === 'ALL' ? manageable : manageable.filter(s => s.role === roleFilter), [manageable, roleFilter]);
+  const activeCount = manageable.filter(s => s.isActive).length;
   const inactiveCount = manageable.filter(s => !s.isActive).length;
-
-  return (
-    <div className="wrap">
-
-      {/* ── Stats ── */}
-      <div className="staff-stat-row">
-        <div className="staff-stat-box">
-          <div className="staff-stat-val">{manageable.length}</div>
-          <div className="staff-stat-lbl">Total Staff</div>
-        </div>
-        <div className="staff-stat-box">
-          <div className="staff-stat-val" style={{color:'var(--green)'}}>{activeCount}</div>
-          <div className="staff-stat-lbl">Active</div>
-        </div>
-        <div className="staff-stat-box">
-          <div className="staff-stat-val" style={{color:'var(--amber)'}}>{inactiveCount}</div>
-          <div className="staff-stat-lbl">On Leave</div>
-        </div>
-      </div>
-
-      {/* ── Add Staff Button ── */}
-      <button className="staff-add-btn" onClick={() => setShowAdd(s => !s)}>
-        {showAdd ? '✕ Cancel' : '➕ Add New Staff Member'}
-      </button>
-
-      {/* ── Add Staff Form ── */}
-      {showAdd && (
-        <div className="staff-add-form">
-          <div className="saf-title">🧑‍💼 New Staff Details</div>
-          <div className="saf-grid">
-            <div className="saf-field">
-              <label className="saf-label">Staff ID</label>
-              <input className="saf-input" value={form.staffId}
-                onChange={e => setForm(f => ({...f, staffId:e.target.value.toUpperCase()}))}
-                placeholder="TC_008" />
-            </div>
-            <div className="saf-field">
-              <label className="saf-label">Full Name</label>
-              <input className="saf-input" value={form.displayName}
-                onChange={e => setForm(f => ({...f, displayName:e.target.value}))}
-                placeholder="Name" />
-            </div>
-          </div>
-          <div className="saf-grid">
-            <div className="saf-field">
-              <label className="saf-label">Role</label>
-              <select className="saf-input" value={form.role}
-                onChange={e => setForm(f => ({...f, role:e.target.value}))}>
-                {ROLE_OPTIONS.map(r => <option key={r} value={r}>{r}</option>)}
-              </select>
-            </div>
-            <div className="saf-field">
-              <label className="saf-label">City</label>
-              <select className="saf-input" value={form.city}
-                onChange={e => setForm(f => ({...f, city:e.target.value}))}>
-                <option value="CBE">Coimbatore (CBE)</option>
-                <option value="CHN">Chennai (CHN)</option>
-              </select>
-            </div>
-          </div>
-          <div className="saf-grid">
-            <div className="saf-field">
-              <label className="saf-label">Default PIN</label>
-              <input className="saf-input" value={form.pin} maxLength={4} inputMode="numeric"
-                onChange={e => setForm(f => ({...f, pin:e.target.value.replace(/\D/g,'')}))}
-                placeholder="1234" />
-            </div>
-            <div className="saf-field" style={{justifyContent:'flex-end'}}>
-              <button className="saf-submit" onClick={addStaff} disabled={adding||!form.staffId||!form.displayName}>
-                {adding ? 'Adding…' : '✅ Add Staff'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ── Role Filter Chips ── */}
-      <div className="role-chips">
-        {ROLE_FILTERS.map(f => (
-          <button key={f.id} className={`role-chip${roleFilter===f.id?' on':''}`}
-            onClick={() => setRoleFilter(f.id)}>{f.label}
-          </button>
-        ))}
-      </div>
-
-      {/* ── Staff Cards ── */}
-      {loading ? [1,2,3,4].map(i => (
-        <div key={i} style={{height:110,borderRadius:14,marginBottom:10}} className="skeleton"/>
-      )) : filtered.length === 0 ? (
-        <div className="coming-soon">
-          <div className="coming-soon-icon">👥</div>
-          <div className="coming-soon-title">No staff in this category</div>
-        </div>
-      ) : filtered.map(s => (
-        <div key={s.staffId} className={`scard${s.isActive?'':' inactive'}`}>
-
-          {/* Card Header */}
-          <div className="scard-header">
-            <div className={`scard-avatar ${getAvClass(s.role)}`}>
-              {Utils.initials(s.displayName)}
-            </div>
-            <div className="scard-info">
-              <div className="scard-name">{s.displayName}</div>
-              <div className="scard-meta">{s.staffId} · {s.city} · {s.role}</div>
-            </div>
-            <div className="scard-badge">
-              <span className={`badge ${s.isActive?'green':'amber'}`}>
-                {s.isActive ? 'Active' : 'Leave'}
-              </span>
-            </div>
-          </div>
-
-          {/* Divider */}
-          <div className="scard-divider"/>
-
-          {/* Actions */}
-          <div className="scard-actions">
-            <button className={`sact ${s.isActive?'sact-leave':'sact-activate'}`}
-              onClick={() => toggleActive(s)}>
-              {s.isActive ? '🏖️ Mark Leave' : '✅ Activate'}
-            </button>
-            {s.role === 'TELECALLER' && (
-              <button className="sact sact-city"
-                onClick={() => setCityTarget({staffId:s.staffId, name:s.displayName, currentCity:s.city})}>
-                🏙️ {s.city} → Switch
-              </button>
-            )}
-            <button className="sact sact-pin" onClick={() => resetPin(s)}>
-              🔑 Reset PIN
-            </button>
-          </div>
-        </div>
-      ))}
-
-      {/* ── City Switch Drawer ── */}
-      {cityTarget && (
-        <div className="city-overlay" onClick={() => setCityTarget(null)}>
-          <div className="city-drawer" onClick={e => e.stopPropagation()}>
-            <div className="city-handle"/>
-            <div className="city-drawer-title">🏙️ Switch City</div>
-            <div className="city-drawer-sub">
-              Moving <strong>{cityTarget.name}</strong> from <strong>{cityTarget.currentCity}</strong>
-            </div>
-            {['CBE','CHN'].filter(c => c !== cityTarget.currentCity).map(c => (
-              <div key={c} className="city-opt" onClick={() => switchCity(c)}>
-                <div className="city-opt-icon">🏙️</div>
-                <div>
-                  <div className="city-opt-name">{c === 'CBE' ? 'Coimbatore' : 'Chennai'} ({c})</div>
-                  <div className="city-opt-sub">Move {cityTarget.name} to {c} operations</div>
-                </div>
-              </div>
-            ))}
-            <div className="city-cancel" onClick={() => setCityTarget(null)}>Cancel</div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
+  return /*#__PURE__*/React.createElement("div", {
+    className: "wrap"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "staff-stat-row"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "staff-stat-box"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "staff-stat-val"
+  }, manageable.length), /*#__PURE__*/React.createElement("div", {
+    className: "staff-stat-lbl"
+  }, "Total Staff")), /*#__PURE__*/React.createElement("div", {
+    className: "staff-stat-box"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "staff-stat-val",
+    style: {
+      color: 'var(--green)'
+    }
+  }, activeCount), /*#__PURE__*/React.createElement("div", {
+    className: "staff-stat-lbl"
+  }, "Active")), /*#__PURE__*/React.createElement("div", {
+    className: "staff-stat-box"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "staff-stat-val",
+    style: {
+      color: 'var(--amber)'
+    }
+  }, inactiveCount), /*#__PURE__*/React.createElement("div", {
+    className: "staff-stat-lbl"
+  }, "On Leave"))), /*#__PURE__*/React.createElement("button", {
+    className: "staff-add-btn",
+    onClick: () => setShowAdd(s => !s)
+  }, showAdd ? '✕ Cancel' : '➕ Add New Staff Member'), showAdd && /*#__PURE__*/React.createElement("div", {
+    className: "staff-add-form"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "saf-title"
+  }, "\uD83E\uDDD1\u200D\uD83D\uDCBC New Staff Details"), /*#__PURE__*/React.createElement("div", {
+    className: "saf-grid"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "saf-field"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "saf-label"
+  }, "Staff ID"), /*#__PURE__*/React.createElement("input", {
+    className: "saf-input",
+    value: form.staffId,
+    onChange: e => setForm(f => ({
+      ...f,
+      staffId: e.target.value.toUpperCase()
+    })),
+    placeholder: "TC_008"
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "saf-field"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "saf-label"
+  }, "Full Name"), /*#__PURE__*/React.createElement("input", {
+    className: "saf-input",
+    value: form.displayName,
+    onChange: e => setForm(f => ({
+      ...f,
+      displayName: e.target.value
+    })),
+    placeholder: "Name"
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "saf-grid"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "saf-field"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "saf-label"
+  }, "Role"), /*#__PURE__*/React.createElement("select", {
+    className: "saf-input",
+    value: form.role,
+    onChange: e => setForm(f => ({
+      ...f,
+      role: e.target.value
+    }))
+  }, ROLE_OPTIONS.map(r => /*#__PURE__*/React.createElement("option", {
+    key: r,
+    value: r
+  }, r)))), /*#__PURE__*/React.createElement("div", {
+    className: "saf-field"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "saf-label"
+  }, "City"), /*#__PURE__*/React.createElement("select", {
+    className: "saf-input",
+    value: form.city,
+    onChange: e => setForm(f => ({
+      ...f,
+      city: e.target.value
+    }))
+  }, /*#__PURE__*/React.createElement("option", {
+    value: "CBE"
+  }, "Coimbatore (CBE)"), /*#__PURE__*/React.createElement("option", {
+    value: "CHN"
+  }, "Chennai (CHN)")))), /*#__PURE__*/React.createElement("div", {
+    className: "saf-grid"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "saf-field"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "saf-label"
+  }, "Default PIN"), /*#__PURE__*/React.createElement("input", {
+    className: "saf-input",
+    value: form.pin,
+    maxLength: 4,
+    inputMode: "numeric",
+    onChange: e => setForm(f => ({
+      ...f,
+      pin: e.target.value.replace(/\D/g, '')
+    })),
+    placeholder: "1234"
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "saf-field",
+    style: {
+      justifyContent: 'flex-end'
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "saf-submit",
+    onClick: addStaff,
+    disabled: adding || !form.staffId || !form.displayName
+  }, adding ? 'Adding…' : '✅ Add Staff')))), /*#__PURE__*/React.createElement("div", {
+    className: "role-chips"
+  }, ROLE_FILTERS.map(f => /*#__PURE__*/React.createElement("button", {
+    key: f.id,
+    className: `role-chip${roleFilter === f.id ? ' on' : ''}`,
+    onClick: () => setRoleFilter(f.id)
+  }, f.label))), loading ? [1, 2, 3, 4].map(i => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    style: {
+      height: 110,
+      borderRadius: 14,
+      marginBottom: 10
+    },
+    className: "skeleton"
+  })) : filtered.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    className: "coming-soon"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "coming-soon-icon"
+  }, "\uD83D\uDC65"), /*#__PURE__*/React.createElement("div", {
+    className: "coming-soon-title"
+  }, "No staff in this category")) : filtered.map(s => /*#__PURE__*/React.createElement("div", {
+    key: s.staffId,
+    className: `scard${s.isActive ? '' : ' inactive'}`
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "scard-header"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: `scard-avatar ${getAvClass(s.role)}`
+  }, Utils.initials(s.displayName)), /*#__PURE__*/React.createElement("div", {
+    className: "scard-info"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "scard-name"
+  }, s.displayName), /*#__PURE__*/React.createElement("div", {
+    className: "scard-meta"
+  }, s.staffId, " \xB7 ", s.city, " \xB7 ", s.role)), /*#__PURE__*/React.createElement("div", {
+    className: "scard-badge"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: `badge ${s.isActive ? 'green' : 'amber'}`
+  }, s.isActive ? 'Active' : 'Leave'))), /*#__PURE__*/React.createElement("div", {
+    className: "scard-divider"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "scard-actions"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: `sact ${s.isActive ? 'sact-leave' : 'sact-activate'}`,
+    onClick: () => toggleActive(s)
+  }, s.isActive ? '🏖️ Mark Leave' : '✅ Activate'), s.role === 'TELECALLER' && /*#__PURE__*/React.createElement("button", {
+    className: "sact sact-city",
+    onClick: () => setCityTarget({
+      staffId: s.staffId,
+      name: s.displayName,
+      currentCity: s.city
+    })
+  }, "\uD83C\uDFD9\uFE0F ", s.city, " \u2192 Switch"), /*#__PURE__*/React.createElement("button", {
+    className: "sact sact-pin",
+    onClick: () => resetPin(s)
+  }, "\uD83D\uDD11 Reset PIN")))), cityTarget && /*#__PURE__*/React.createElement("div", {
+    className: "city-overlay",
+    onClick: () => setCityTarget(null)
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "city-drawer",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "city-handle"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "city-drawer-title"
+  }, "\uD83C\uDFD9\uFE0F Switch City"), /*#__PURE__*/React.createElement("div", {
+    className: "city-drawer-sub"
+  }, "Moving ", /*#__PURE__*/React.createElement("strong", null, cityTarget.name), " from ", /*#__PURE__*/React.createElement("strong", null, cityTarget.currentCity)), ['CBE', 'CHN'].filter(c => c !== cityTarget.currentCity).map(c => /*#__PURE__*/React.createElement("div", {
+    key: c,
+    className: "city-opt",
+    onClick: () => switchCity(c)
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "city-opt-icon"
+  }, "\uD83C\uDFD9\uFE0F"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "city-opt-name"
+  }, c === 'CBE' ? 'Coimbatore' : 'Chennai', " (", c, ")"), /*#__PURE__*/React.createElement("div", {
+    className: "city-opt-sub"
+  }, "Move ", cityTarget.name, " to ", c, " operations")))), /*#__PURE__*/React.createElement("div", {
+    className: "city-cancel",
+    onClick: () => setCityTarget(null)
+  }, "Cancel"))));
 };
-
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 //  APP SHELL
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-const AppShell = ({ session, onLogout }) => {
+const AppShell = ({
+  session,
+  onLogout
+}) => {
   const [activePage, setActivePage] = useState('home');
-  const {toast,showToast,hideToast}  = useToast();
-  const handleLogout=useCallback(()=>{SS.clear();onLogout();},[onLogout]);
-  useTokenRefresh(session,handleLogout);
-
+  const {
+    toast,
+    showToast,
+    hideToast
+  } = useToast();
+  const handleLogout = useCallback(() => {
+    SS.clear();
+    onLogout();
+  }, [onLogout]);
+  useTokenRefresh(session, handleLogout);
   const pages = {
-    home:    <HomeTab    session={session} showToast={showToast} onTabChange={setActivePage}/>,
-    upload:  <UploadTab  session={session} showToast={showToast}/>,
-    team:    <TeamTab    session={session}/>,
-    staff:   <StaffTab   session={session} showToast={showToast}/>,
-    pending: <PendingTab session={session}/>,
-    issues:  <IssuesTab  session={session} showToast={showToast}/>,
-    control: <ControlTab session={session} showToast={showToast}/>,
+    home: /*#__PURE__*/React.createElement(HomeTab, {
+      session: session,
+      showToast: showToast,
+      onTabChange: setActivePage
+    }),
+    upload: /*#__PURE__*/React.createElement(UploadTab, {
+      session: session,
+      showToast: showToast
+    }),
+    team: /*#__PURE__*/React.createElement(TeamTab, {
+      session: session
+    }),
+    staff: /*#__PURE__*/React.createElement(StaffTab, {
+      session: session,
+      showToast: showToast
+    }),
+    pending: /*#__PURE__*/React.createElement(PendingTab, {
+      session: session
+    }),
+    issues: /*#__PURE__*/React.createElement(IssuesTab, {
+      session: session,
+      showToast: showToast
+    }),
+    control: /*#__PURE__*/React.createElement(ControlTab, {
+      session: session,
+      showToast: showToast
+    })
   };
-
-  return (
-    <div className="app">
-      <div className="header">
-        <div className="brand">
-          <div className="brand-logo">VOA</div>
-          <span className="brand-name">CollectPro</span>
-          <span className="brand-role">ADMIN</span>
-        </div>
-        <div className="hdr-right">
-          <span className="city-badge">{session.city}</span>
-          <span className="staff-badge">{Utils.name1(session.staffName)}</span>
-          <button className="logout-btn" onClick={handleLogout}>✕</button>
-        </div>
-      </div>
-      <div className="main-content">
-        {NAV_TABS.map(n=>(
-          <div key={n.id} className={`page${activePage===n.id?' on':''}`}>{pages[n.id]}</div>
-        ))}
-      </div>
-      <div className="bnav">
-        {NAV_TABS.map(n=>(
-          <button key={n.id} className={`ni${activePage===n.id?' on':''}`} onClick={()=>setActivePage(n.id)}>
-            <span className="ico">{n.icon}</span>{n.label}
-          </button>
-        ))}
-      </div>
-      {toast&&<Toast msg={toast.msg} type={toast.type} onDone={hideToast}/>}
-    </div>
-  );
+  return /*#__PURE__*/React.createElement("div", {
+    className: "app"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "header"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "brand"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "brand-logo"
+  }, "VOA"), /*#__PURE__*/React.createElement("span", {
+    className: "brand-name"
+  }, "CollectPro"), /*#__PURE__*/React.createElement("span", {
+    className: "brand-role"
+  }, "ADMIN")), /*#__PURE__*/React.createElement("div", {
+    className: "hdr-right"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "city-badge"
+  }, session.city), /*#__PURE__*/React.createElement("span", {
+    className: "staff-badge"
+  }, Utils.name1(session.staffName)), /*#__PURE__*/React.createElement("button", {
+    className: "logout-btn",
+    onClick: handleLogout
+  }, "\u2715"))), /*#__PURE__*/React.createElement("div", {
+    className: "main-content"
+  }, NAV_TABS.map(n => /*#__PURE__*/React.createElement("div", {
+    key: n.id,
+    className: `page${activePage === n.id ? ' on' : ''}`
+  }, pages[n.id]))), /*#__PURE__*/React.createElement("div", {
+    className: "bnav"
+  }, NAV_TABS.map(n => /*#__PURE__*/React.createElement("button", {
+    key: n.id,
+    className: `ni${activePage === n.id ? ' on' : ''}`,
+    onClick: () => setActivePage(n.id)
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "ico"
+  }, n.icon), n.label))), toast && /*#__PURE__*/React.createElement(Toast, {
+    msg: toast.msg,
+    type: toast.type,
+    onDone: hideToast
+  }));
 };
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 //  LOGIN
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-const LoginCard = ({ onLogin }) => {
-  const[city,setCity]=useState('CBE');const[staffId,setStaffId]=useState('');
-  const[pin,setPin]=useState('');const[error,setError]=useState('');const[shaking,setShaking]=useState(false);
-  const{toast,showToast,hideToast}=useToast();
-  const shake=useCallback(()=>{setShaking(true);setTimeout(()=>setShaking(false),450);},[]);
-  const{login,loading}=useAuth({onSuccess:onLogin,onError:(m)=>{shake();setError(m);showToast(m,'error');setPin('');}});
-  const sub=useCallback(()=>{if(!staffId.trim()){showToast('Enter your Staff ID');return;}if(pin.length<4){showToast('Enter your 4-digit PIN');return;}setError('');login(city,staffId,pin);},[city,staffId,pin,login]);
-  useEffect(()=>{if(pin.length===4&&staffId.trim()){const t=setTimeout(sub,80);return()=>clearTimeout(t);}},[pin,staffId]);
-  return(
-    <div className="login-screen">
-      <div className={`login-card${shaking?' shake':''}`}>
-        <div className="login-logo-wrap">
-          <BrandLogo size="lg"/>
-          <div className="login-title">Admin Console</div>
-          <div className="login-sub">CollectPro · VOA Recovery Operations</div>
-          <div className="role-pill">🛡️ Admin Portal</div>
-        </div>
-        <div className="form-group"><label className="form-label">City</label>
-          <div className="select-wrap"><select className="form-select" value={city} onChange={e=>setCity(e.target.value)} disabled={loading}>
-            <option value="CBE">Coimbatore (CBE)</option><option value="CHN">Chennai (CHN)</option>
-          </select></div></div>
-        <div className="form-group"><label className="form-label">Staff ID</label>
-          <input className="form-input" type="text" value={staffId} onChange={e=>setStaffId(e.target.value.toUpperCase())} onKeyDown={e=>e.key==='Enter'&&sub()} placeholder="e.g. AD_001" autoCapitalize="characters" autoCorrect="off" spellCheck={false} disabled={loading}/>
-        </div>
-        <div className="form-group" style={{marginBottom:8}}><label className="form-label">PIN</label>
-          <input className="form-input pin-field" type="password" inputMode="numeric" pattern="[0-9]*" maxLength={4} value={pin} onChange={e=>setPin(Utils.pin(e.target.value))} onKeyDown={e=>e.key==='Enter'&&sub()} placeholder="• • • •" disabled={loading}/>
-        </div>
-        <PinDots length={pin.length}/>
-        <button className="btn-login" onClick={sub} disabled={loading}>
-          {loading?<><div className="spinner"/><span>Signing in...</span></>:'Sign In →'}
-        </button>
-        {error&&<div className="login-error">{error}</div>}
-      </div>
-      {toast&&<Toast msg={toast.msg} type={toast.type} onDone={hideToast}/>}
-    </div>
-  );
+const LoginCard = ({
+  onLogin
+}) => {
+  const [city, setCity] = useState('CBE');
+  const [staffId, setStaffId] = useState('');
+  const [pin, setPin] = useState('');
+  const [error, setError] = useState('');
+  const [shaking, setShaking] = useState(false);
+  const {
+    toast,
+    showToast,
+    hideToast
+  } = useToast();
+  const shake = useCallback(() => {
+    setShaking(true);
+    setTimeout(() => setShaking(false), 450);
+  }, []);
+  const {
+    login,
+    loading
+  } = useAuth({
+    onSuccess: onLogin,
+    onError: m => {
+      shake();
+      setError(m);
+      showToast(m, 'error');
+      setPin('');
+    }
+  });
+  const sub = useCallback(() => {
+    if (!staffId.trim()) {
+      showToast('Enter your Staff ID');
+      return;
+    }
+    if (pin.length < 4) {
+      showToast('Enter your 4-digit PIN');
+      return;
+    }
+    setError('');
+    login(city, staffId, pin);
+  }, [city, staffId, pin, login]);
+  useEffect(() => {
+    if (pin.length === 4 && staffId.trim()) {
+      const t = setTimeout(sub, 80);
+      return () => clearTimeout(t);
+    }
+  }, [pin, staffId]);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "login-screen"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: `login-card${shaking ? ' shake' : ''}`
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "login-logo-wrap"
+  }, /*#__PURE__*/React.createElement(BrandLogo, {
+    size: "lg"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "login-title"
+  }, "Admin Console"), /*#__PURE__*/React.createElement("div", {
+    className: "login-sub"
+  }, "CollectPro \xB7 VOA Recovery Operations"), /*#__PURE__*/React.createElement("div", {
+    className: "role-pill"
+  }, "\uD83D\uDEE1\uFE0F Admin Portal")), /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label"
+  }, "City"), /*#__PURE__*/React.createElement("div", {
+    className: "select-wrap"
+  }, /*#__PURE__*/React.createElement("select", {
+    className: "form-select",
+    value: city,
+    onChange: e => setCity(e.target.value),
+    disabled: loading
+  }, /*#__PURE__*/React.createElement("option", {
+    value: "CBE"
+  }, "Coimbatore (CBE)"), /*#__PURE__*/React.createElement("option", {
+    value: "CHN"
+  }, "Chennai (CHN)")))), /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label"
+  }, "Staff ID"), /*#__PURE__*/React.createElement("input", {
+    className: "form-input",
+    type: "text",
+    value: staffId,
+    onChange: e => setStaffId(e.target.value.toUpperCase()),
+    onKeyDown: e => e.key === 'Enter' && sub(),
+    placeholder: "e.g. AD_001",
+    autoCapitalize: "characters",
+    autoCorrect: "off",
+    spellCheck: false,
+    disabled: loading
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "form-group",
+    style: {
+      marginBottom: 8
+    }
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label"
+  }, "PIN"), /*#__PURE__*/React.createElement("input", {
+    className: "form-input pin-field",
+    type: "password",
+    inputMode: "numeric",
+    pattern: "[0-9]*",
+    maxLength: 4,
+    value: pin,
+    onChange: e => setPin(Utils.pin(e.target.value)),
+    onKeyDown: e => e.key === 'Enter' && sub(),
+    placeholder: "\u2022 \u2022 \u2022 \u2022",
+    disabled: loading
+  })), /*#__PURE__*/React.createElement(PinDots, {
+    length: pin.length
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "btn-login",
+    onClick: sub,
+    disabled: loading
+  }, loading ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "spinner"
+  }), /*#__PURE__*/React.createElement("span", null, "Signing in...")) : 'Sign In →'), error && /*#__PURE__*/React.createElement("div", {
+    className: "login-error"
+  }, error)), toast && /*#__PURE__*/React.createElement(Toast, {
+    msg: toast.msg,
+    type: toast.type,
+    onDone: hideToast
+  }));
 };
 
 // ROOT
-const App=()=>{
-  const[session,setSession]=useState(null);const[checking,setChecking]=useState(true);
-  useEffect(()=>{const s=SS.load();if(s)setSession(s);setChecking(false);},[]);
-  if(checking)return<div className="load-overlay"><div className="load-spinner"/><div className="load-text">CollectPro loading...</div></div>;
-  return session?<AppShell session={session} onLogout={()=>setSession(null)}/>:<LoginCard onLogin={s=>setSession(s)}/>;
+const App = () => {
+  const [session, setSession] = useState(null);
+  const [checking, setChecking] = useState(true);
+  useEffect(() => {
+    const s = SS.load();
+    if (s) setSession(s);
+    setChecking(false);
+  }, []);
+  if (checking) return /*#__PURE__*/React.createElement("div", {
+    className: "load-overlay"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "load-spinner"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "load-text"
+  }, "CollectPro loading..."));
+  return session ? /*#__PURE__*/React.createElement(AppShell, {
+    session: session,
+    onLogout: () => setSession(null)
+  }) : /*#__PURE__*/React.createElement(LoginCard, {
+    onLogin: s => setSession(s)
+  });
 };
-ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+ReactDOM.createRoot(document.getElementById('root')).render(/*#__PURE__*/React.createElement(App, null));
+
 </script>
 </body>
 </html>
