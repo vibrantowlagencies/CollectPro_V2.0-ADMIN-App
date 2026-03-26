@@ -33,9 +33,9 @@
   ╚══════════════════════════════════════════════════════════════╝
 -->
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
 <style>
 :root{
@@ -55,7 +55,7 @@
   --fh:'Sora',sans-serif;--fm:'JetBrains Mono',monospace;--fb:'Plus Jakarta Sans',sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body,#root{height:100%;width:100%;overflow:hidden}
+html,body,#root{height:100%;width:100%;overflow:hidden}@supports(height:100dvh){.app{height:100dvh!important}}
 body{background:var(--bg);color:var(--text);font-family:var(--fb);-webkit-font-smoothing:antialiased}
 
 @keyframes fadeUp  {from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
@@ -112,8 +112,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);-webkit-font-s
 
 /* ── PAGES ── */
 .main-content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
-.page{display:none;padding-bottom:80px}
-.page.on{display:block;animation:fadeIn .2s ease}
+.page{display:none}.page.on{display:block;animation:fadeIn .2s ease;padding-bottom:72px}
 
 /* ── SHARED COMPONENTS ── */
 .wrap{padding:16px}
@@ -1065,7 +1064,17 @@ const HomeTab = ({
     className: "alert-title"
   }, overview.overdueAppts, " overdue appointments"), /*#__PURE__*/React.createElement("div", {
     className: "alert-sub"
-  }, "Appointments past due date \u2014 execs need to follow up"))), !ovLoad && (overview?.aging || 0) > 0 && /*#__PURE__*/React.createElement("div", {
+  }, "Appointments past due date \u2014 execs need to follow up"))), !ovLoad && (overview?.escalations?.TC_CHEAT||0) > 0 && /*#__PURE__*/React.createElement("div",{
+    className:"alert-card",style:{borderLeft:'4px solid #dc2626',background:'#fef2f2',marginBottom:8,padding:'10px 14px',borderRadius:8}
+  }, /*#__PURE__*/React.createElement("div",{style:{fontWeight:700,color:'#dc2626',fontSize:13}},
+    '🚨 '+(overview.escalations.TC_CHEAT)+' fraud alert — TC logging NR repeatedly without genuine contact'),
+  /*#__PURE__*/React.createElement("div",{style:{fontSize:12,color:'#991b1b',marginTop:2}},'Team tab → review flagged TCs')),
+  !ovLoad && (overview?.escalations?.EXEC_LOOP||0) > 0 && /*#__PURE__*/React.createElement("div",{
+    className:"alert-card",style:{borderLeft:'4px solid #d97706',background:'#fffbeb',marginBottom:8,padding:'10px 14px',borderRadius:8}
+  }, /*#__PURE__*/React.createElement("div",{style:{fontWeight:700,color:'#b45309',fontSize:13}},
+    '⚠️ '+(overview.escalations.EXEC_LOOP)+' exec loop — accounts rescheduled 3×+ with no collection'),
+  /*#__PURE__*/React.createElement("div",{style:{fontSize:12,color:'#92400e',marginTop:2}},'Pending tab → Exec Loop filter → reassign')),
+  !ovLoad && (overview?.aging || 0) > 0 && /*#__PURE__*/React.createElement("div", {
     className: "alert-card amber",
     style: {
       marginBottom: 14
@@ -1638,40 +1647,42 @@ const TeamTab = ({
       gap: 4,
       textAlign: 'center'
     }
-  }, [{
-    l: 'Assigned',
-    v: tc.total || 0
-  }, {
-    l: 'Called',
-    v: tc.called || 0
-  }, {
-    l: 'Appt',
-    v: tc.apptFixed || 0
-  }, {
-    l: 'Collected',
-    v: tc.mtdCollected || 0
-  }].map(s => /*#__PURE__*/React.createElement("div", {
-    key: s.l,
-    style: {
-      background: 'var(--bg3)',
-      borderRadius: 8,
-      padding: '8px 4px'
-    }
+  },
+  // Productivity + escalation alerts
+  (tc.escalatedAccounts || 0) > 0 && /*#__PURE__*/React.createElement("div", {
+    style: {background:'#fef2f2',border:'1px solid #fecaca',borderRadius:8,padding:'6px 10px',
+            marginBottom:8,fontSize:12,fontWeight:700,color:'#dc2626'}
+  }, '🚨 ' + tc.escalatedAccounts + ' account(s) flagged — suspected call fraud. Review immediately.'),
+  tc.avgConsecNR >= 3 && /*#__PURE__*/React.createElement("div", {
+    style: {background:'#fffbeb',border:'1px solid #fde68a',borderRadius:8,padding:'6px 10px',
+            marginBottom:8,fontSize:12,fontWeight:600,color:'#b45309'}
+  }, '⚠️ Avg ' + tc.avgConsecNR + ' consecutive NR per account — low engagement'),
+  (tc.agingAccounts || 0) > 0 && /*#__PURE__*/React.createElement("div", {
+    style: {background:'#fff7ed',border:'1px solid #fed7aa',borderRadius:8,padding:'6px 10px',
+            marginBottom:8,fontSize:12,color:'#c2410c'}
+  }, '⏱ ' + tc.agingAccounts + ' accounts idle >48h — needs follow-up'),
+  /*#__PURE__*/React.createElement("div", {
+    style: {display:'grid',gridTemplateColumns:'repeat(5,1fr)',gap:4,textAlign:'center'}
+  }, [{l:'Assigned',v:tc.total||0,c:'var(--text)'},{l:'Called',v:tc.called||0,c:'var(--green)'},
+     {l:'Appt',v:tc.apptFixed||0,c:'var(--green)'},{l:'MTD',v:tc.mtdCollected||0,c:'var(--accent)'},
+     {l:'Score',v:(tc.productivityGrade||'—'),c:tc.productivityScore>=70?'var(--green)':tc.productivityScore>=50?'var(--amber)':'var(--red)'}
+    ].map(s => /*#__PURE__*/React.createElement("div", {
+      key: s.l,
+      style: {background:'var(--bg3)',borderRadius:8,padding:'8px 4px'}
+    },
+    /*#__PURE__*/React.createElement("div", {
+      style:{fontFamily:'var(--fh)',fontSize:16,fontWeight:800,color:s.c}
+    }, s.v),
+    /*#__PURE__*/React.createElement("div", {
+      style:{fontSize:9,color:'var(--text3)',fontFamily:'var(--fm)',textTransform:'uppercase'}
+    }, s.l)))),
+  /*#__PURE__*/React.createElement("div", {
+    style:{marginTop:6,height:6,background:'var(--bg3)',borderRadius:4,overflow:'hidden'}
   }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontFamily: 'var(--fh)',
-      fontSize: 16,
-      fontWeight: 800,
-      color: 'var(--text)'
-    }
-  }, s.v), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 9,
-      color: 'var(--text3)',
-      fontFamily: 'var(--fm)',
-      textTransform: 'uppercase'
-    }
-  }, s.l)))))));
+    style:{height:'100%',borderRadius:4,width:(tc.productivityScore||0)+'%',
+           background:tc.productivityScore>=70?'var(--green)':tc.productivityScore>=50?'var(--amber)':'var(--red)',
+           transition:'width .5s'}
+  }))));
 };
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1692,7 +1703,7 @@ const PendingTab = ({
   const today = Utils.today();
   const filtered = useMemo(() => {
     if (!accounts) return [];
-    return accounts.filter(a => {
+    const base = accounts.filter(a => {
       const terminal = ['COLLECTED', 'NR_OWN', 'NR_WRONG_NO', 'NR_ADDR', 'STRIKE_3'];
       if (terminal.includes(a.status)) return false;
       if (filter === 'ALL') return true;
@@ -1700,6 +1711,15 @@ const PendingTab = ({
       if (filter === 'OVERDUE') return a.apptDate && a.apptDate < today && a.status === 'APPT_FIXED';
       if (filter === 'ISSUES') return a.status.startsWith('ISSUE_');
       return a.status === filter;
+    });
+    // Sort: overdue first, then by aging hours desc (most urgent at top)
+    return base.sort((a, b) => {
+      const aH = Utils.hoursAgo(a.pendingSince || a.pending_since);
+      const bH = Utils.hoursAgo(b.pendingSince || b.pending_since);
+      const aOv = a.apptDate && a.apptDate < today && a.status === 'APPT_FIXED' ? 1 : 0;
+      const bOv = b.apptDate && b.apptDate < today && b.status === 'APPT_FIXED' ? 1 : 0;
+      if (bOv !== aOv) return bOv - aOv;
+      return bH - aH;
     });
   }, [accounts, filter, today]);
   const chips = [{
@@ -1776,13 +1796,25 @@ const PendingTab = ({
       fontSize: 13,
       fontFamily: 'var(--fm)'
     }
-  }, "No accounts match this filter") : filtered.slice(0, 30).map((a, i) => {
+  }, "No accounts match this filter") : filtered.slice(0, 100).map((a, i) => {
     const urg = getUrgency(a);
     const ageH = Utils.hoursAgo(a.pendingSince || a.pending_since);
+    const pendingDays = Math.floor(ageH / 24);
+    const agingLabel  = urg === 'overdue'
+      ? 'OVERDUE APPT'
+      : urg === 'aging'
+      ? (pendingDays >= 1 ? pendingDays + 'd ' + (ageH % 24) + 'h idle' : ageH + 'h idle')
+      : 'Active';
+    const owner       = a.currentOwner || a.current_owner || '';
+    const nextAction  = a.nextAction   || a.next_action   || '';
+    const pendingSince= a.pendingSince  || a.pending_since || '';
+    const lastAction  = a.lastActionTime|| a.last_action_time || '';
+    const ownerRole   = owner.startsWith('TC_') ? '📞 TC' : owner.startsWith('EX_') ? '🏍 Exec' : '⚙️';
     return /*#__PURE__*/React.createElement("div", {
       key: i,
       className: `pending-card ${urg}`
-    }, /*#__PURE__*/React.createElement("div", {
+    },
+    /*#__PURE__*/React.createElement("div", {
       className: "pc-top"
     }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
       className: "pc-accno"
@@ -1792,21 +1824,42 @@ const PendingTab = ({
       className: "pc-phone"
     }, a.mobile)), /*#__PURE__*/React.createElement("span", {
       className: `badge ${urg === 'overdue' ? 'red' : urg === 'aging' ? 'amber' : 'blue'}`
-    }, urg === 'overdue' ? 'Overdue' : urg === 'aging' ? Utils.fmtHours(ageH) : STATUS_LABELS[a.status] || a.status)), /*#__PURE__*/React.createElement("div", {
+    }, urg === 'overdue' ? 'Overdue' : urg === 'aging' ? Utils.fmtHours(ageH) : STATUS_LABELS[a.status] || a.status)),
+    /*#__PURE__*/React.createElement("div", {
+      style: {display:'flex', alignItems:'center', gap:8, margin:'6px 0',
+              padding:'5px 8px', borderRadius:6,
+              background: urg==='overdue' ? '#fef2f2' : urg==='aging' ? '#fffbeb' : '#f0fdf4',
+              fontSize: 12, fontWeight: 700,
+              color: urg==='overdue' ? '#dc2626' : urg==='aging' ? '#b45309' : '#15803d' }
+    },
+      urg==='overdue' ? '🔴' : urg==='aging' ? '⚠️' : '✅', ' ', agingLabel,
+      ' — ', ownerRole, ' ', owner, ' responsible'
+    ),
+    nextAction && /*#__PURE__*/React.createElement("div", {
+      style: {fontSize:12, color:'var(--text3)', marginBottom:4, padding:'0 2px'}
+    }, '→ Next: ', nextAction),
+    /*#__PURE__*/React.createElement("div", {
       className: "pc-meta"
     }, /*#__PURE__*/React.createElement("span", {
       className: "pc-area"
     }, a.area), a.apptDate && /*#__PURE__*/React.createElement("span", {
       className: "pc-area",
-      style: {
-        color: 'var(--green)'
-      }
-    }, "\uD83D\uDCC5 ", a.apptDate), a.tcId && /*#__PURE__*/React.createElement("span", {
-      className: "pc-area"
-    }, a.tcId), a.execId && /*#__PURE__*/React.createElement("span", {
-      className: "pc-area"
-    }, a.execId)));
-  }), !loading && filtered.length > 30 && /*#__PURE__*/React.createElement("div", {
+      style: { color: urg==='overdue' ? 'var(--red)' : 'var(--green)' }
+    }, "📅 ", a.apptDate), a.tcId && /*#__PURE__*/React.createElement("span", {
+      className: "pc-area", style: {background:'#fff7ed', color:'#c2410c', borderRadius:4, padding:'1px 6px'}
+    }, 'TC: ', a.tcId), a.execId && /*#__PURE__*/React.createElement("span", {
+      className: "pc-area", style: {background:'#f0fdfa', color:'#0f766e', borderRadius:4, padding:'1px 6px'}
+    }, 'EX: ', a.execId),
+    (a.rescheduleCount||a.reschedule_count||0) > 0 && /*#__PURE__*/React.createElement('span',{
+      style:{background:'#fef3c7',color:'#92400e',borderRadius:4,padding:'2px 7px',fontSize:11,fontWeight:700,marginLeft:4}
+    },'🔄 ',a.rescheduleCount||a.reschedule_count,'× rescheduled'),
+    (a.escalationFlag||a.escalation_flag) === 'TC_CHEAT' && /*#__PURE__*/React.createElement('span',{
+      style:{background:'#fef2f2',color:'#dc2626',borderRadius:4,padding:'2px 7px',fontSize:11,fontWeight:700,marginLeft:4}
+    },'🚨 Fraud Flag'),
+    (a.escalationFlag||a.escalation_flag) === 'EXEC_LOOP' && /*#__PURE__*/React.createElement('span',{
+      style:{background:'#fef2f2',color:'#dc2626',borderRadius:4,padding:'2px 7px',fontSize:11,fontWeight:700,marginLeft:4}
+    },'🔁 Exec Loop')));
+  }), !loading && filtered.length > 100 && /*#__PURE__*/React.createElement("div", {
     style: {
       textAlign: 'center',
       fontSize: 12,
@@ -1814,7 +1867,7 @@ const PendingTab = ({
       fontFamily: 'var(--fm)',
       paddingBottom: 8
     }
-  }, "Showing 30 of ", filtered.length, " \xB7 See full list in Accounts module"));
+  }, "Showing 100 of ", filtered.length, " \xB7 See full list in Accounts module"));
 };
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -2772,6 +2825,42 @@ const App = () => {
 };
 ReactDOM.createRoot(document.getElementById('root')).render(/*#__PURE__*/React.createElement(App, null));
 
+</script>
+
+<script>
+// Android back button — go to previous tab instead of exiting
+(function(){
+  var history_stack = [];
+  var active_page = null;
+  
+  // Override pushState to track tab changes
+  window.__navTo = function(pageId) {
+    if (active_page && active_page !== pageId) {
+      history.pushState({ page: active_page }, '', '');
+      history_stack.push(active_page);
+    }
+    active_page = pageId;
+  };
+  
+  // Handle back button
+  window.addEventListener('popstate', function(e) {
+    if (history_stack.length > 0) {
+      var prev = history_stack.pop();
+      // Find and click the nav button for prev page
+      var btns = document.querySelectorAll('.ni');
+      btns.forEach(function(btn) {
+        if (btn.dataset && btn.dataset.page === prev) btn.click();
+      });
+    } else {
+      // No history — confirm exit
+      if (confirm('Exit CollectPro?')) window.history.back();
+      else history.pushState(null, '', '');
+    }
+  });
+  
+  // Push initial state
+  history.pushState(null, '', '');
+})();
 </script>
 </body>
 </html>
