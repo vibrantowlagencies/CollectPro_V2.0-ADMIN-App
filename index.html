@@ -33,6 +33,17 @@
   ╚══════════════════════════════════════════════════════════════╝
 -->
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+window.onerror = function(msg, src, line, col, err) {
+  document.body.innerHTML = '<div style="padding:20px;font-family:sans-serif">'
+    + '<h3 style="color:#dc2626">App Error</h3>'
+    + '<p style="font-size:13px;color:#333;word-break:break-all">' + msg + '</p>'
+    + '<p style="font-size:11px;color:#666">Line: ' + line + ' Col: ' + col + '</p>'
+    + '<p style="font-size:11px;color:#666">File: ' + src + '</p>'
+    + '</div>';
+  return true;
+};
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -55,7 +66,7 @@
   --fh:'Sora',sans-serif;--fm:'JetBrains Mono',monospace;--fb:'Plus Jakarta Sans',sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body,#root{height:100%;width:100%;overflow:hidden}@supports(height:100dvh){.app{height:100dvh!important}}
+html,body{height:100%;width:100%;overflow:hidden}#root{height:100%;width:100%}
 body{background:var(--bg);color:var(--text);font-family:var(--fb);-webkit-font-smoothing:antialiased}
 
 @keyframes fadeUp  {from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
@@ -1647,42 +1658,20 @@ const TeamTab = ({
       gap: 4,
       textAlign: 'center'
     }
-  },
-  // Productivity + escalation alerts
-  (tc.escalatedAccounts || 0) > 0 && /*#__PURE__*/React.createElement("div", {
-    style: {background:'#fef2f2',border:'1px solid #fecaca',borderRadius:8,padding:'6px 10px',
-            marginBottom:8,fontSize:12,fontWeight:700,color:'#dc2626'}
-  }, '🚨 ' + tc.escalatedAccounts + ' account(s) flagged — suspected call fraud. Review immediately.'),
-  tc.avgConsecNR >= 3 && /*#__PURE__*/React.createElement("div", {
-    style: {background:'#fffbeb',border:'1px solid #fde68a',borderRadius:8,padding:'6px 10px',
-            marginBottom:8,fontSize:12,fontWeight:600,color:'#b45309'}
-  }, '⚠️ Avg ' + tc.avgConsecNR + ' consecutive NR per account — low engagement'),
-  (tc.agingAccounts || 0) > 0 && /*#__PURE__*/React.createElement("div", {
-    style: {background:'#fff7ed',border:'1px solid #fed7aa',borderRadius:8,padding:'6px 10px',
-            marginBottom:8,fontSize:12,color:'#c2410c'}
-  }, '⏱ ' + tc.agingAccounts + ' accounts idle >48h — needs follow-up'),
-  /*#__PURE__*/React.createElement("div", {
-    style: {display:'grid',gridTemplateColumns:'repeat(5,1fr)',gap:4,textAlign:'center'}
-  }, [{l:'Assigned',v:tc.total||0,c:'var(--text)'},{l:'Called',v:tc.called||0,c:'var(--green)'},
-     {l:'Appt',v:tc.apptFixed||0,c:'var(--green)'},{l:'MTD',v:tc.mtdCollected||0,c:'var(--accent)'},
-     {l:'Score',v:(tc.productivityGrade||'—'),c:tc.productivityScore>=70?'var(--green)':tc.productivityScore>=50?'var(--amber)':'var(--red)'}
-    ].map(s => /*#__PURE__*/React.createElement("div", {
-      key: s.l,
-      style: {background:'var(--bg3)',borderRadius:8,padding:'8px 4px'}
-    },
-    /*#__PURE__*/React.createElement("div", {
-      style:{fontFamily:'var(--fh)',fontSize:16,fontWeight:800,color:s.c}
-    }, s.v),
-    /*#__PURE__*/React.createElement("div", {
-      style:{fontSize:9,color:'var(--text3)',fontFamily:'var(--fm)',textTransform:'uppercase'}
-    }, s.l)))),
-  /*#__PURE__*/React.createElement("div", {
-    style:{marginTop:6,height:6,background:'var(--bg3)',borderRadius:4,overflow:'hidden'}
-  }, /*#__PURE__*/React.createElement("div", {
-    style:{height:'100%',borderRadius:4,width:(tc.productivityScore||0)+'%',
-           background:tc.productivityScore>=70?'var(--green)':tc.productivityScore>=50?'var(--amber)':'var(--red)',
-           transition:'width .5s'}
-  }))));
+  }, [{l:'Assigned',v:tc.total||0},{l:'Called',v:tc.called||0},{l:'Appt',v:tc.apptFixed||0},{l:'MTD',v:tc.mtdCollected||0}].map(s => /*#__PURE__*/React.createElement("div", {
+    key: s.l,
+    style: {background:'var(--bg3)',borderRadius:8,padding:'8px 4px',textAlign:'center'}
+  }, /*#__PURE__*/React.createElement("div", {style:{fontFamily:'var(--fh)',fontSize:16,fontWeight:800}}, s.v),
+  /*#__PURE__*/React.createElement("div", {style:{fontSize:9,color:'var(--text3)',textTransform:'uppercase'}}, s.l)))),
+  (tc.escalatedAccounts||0) > 0 && /*#__PURE__*/React.createElement("div", {
+    style:{background:'#fef2f2',borderLeft:'3px solid #dc2626',padding:'5px 10px',fontSize:11,color:'#dc2626',marginTop:6,borderRadius:4}
+  }, '🚨 ' + tc.escalatedAccounts + ' fraud flag(s)'),
+  /*#__PURE__*/React.createElement("div", {style:{marginTop:6,display:'flex',alignItems:'center',gap:6}},
+    /*#__PURE__*/React.createElement("div", {style:{flex:1,height:5,background:'var(--bg3)',borderRadius:3,overflow:'hidden'}},
+      /*#__PURE__*/React.createElement("div", {style:{height:'100%',borderRadius:3,width:(tc.productivityScore||0)+'%',
+        background:tc.productivityScore>=70?'var(--green)':tc.productivityScore>=50?'var(--amber)':'var(--red)',transition:'width .5s'}})),
+    /*#__PURE__*/React.createElement("span", {style:{fontSize:11,fontWeight:700,color:tc.productivityScore>=70?'var(--green)':tc.productivityScore>=50?'var(--amber)':'var(--red)'}},
+      tc.productivityGrade||'—')))));
 };
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -2827,40 +2816,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(/*#__PURE__*/React.c
 
 </script>
 
-<script>
-// Android back button — go to previous tab instead of exiting
-(function(){
-  var history_stack = [];
-  var active_page = null;
-  
-  // Override pushState to track tab changes
-  window.__navTo = function(pageId) {
-    if (active_page && active_page !== pageId) {
-      history.pushState({ page: active_page }, '', '');
-      history_stack.push(active_page);
-    }
-    active_page = pageId;
-  };
-  
-  // Handle back button
-  window.addEventListener('popstate', function(e) {
-    if (history_stack.length > 0) {
-      var prev = history_stack.pop();
-      // Find and click the nav button for prev page
-      var btns = document.querySelectorAll('.ni');
-      btns.forEach(function(btn) {
-        if (btn.dataset && btn.dataset.page === prev) btn.click();
-      });
-    } else {
-      // No history — confirm exit
-      if (confirm('Exit CollectPro?')) window.history.back();
-      else history.pushState(null, '', '');
-    }
-  });
-  
-  // Push initial state
-  history.pushState(null, '', '');
-})();
-</script>
+
 </body>
 </html>
