@@ -115,15 +115,15 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);-webkit-font-s
 .logout-btn:hover{border-color:var(--accent);color:var(--accent)}
 
 /* ── NAV ── */
-.bnav{display:flex;background:var(--bg2);border-top:1px solid var(--border);height:60px;flex-shrink:0;padding-bottom:env(safe-area-inset-bottom)}
+.bnav{display:flex;background:var(--bg2);border-top:1px solid var(--border);height:60px;padding-bottom:env(safe-area-inset-bottom);position:fixed;bottom:0;left:0;right:0;z-index:999;width:100%}
 .ni{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:none;background:none;cursor:pointer;color:var(--text3);font-size:10px;font-family:var(--fb);font-weight:600;transition:color .2s;padding:0;position:relative}
 .ni .ico{font-size:18px}
 .ni.on{color:var(--accent)}
 .nav-dot{position:absolute;top:8px;right:calc(50% - 14px);width:7px;height:7px;border-radius:50%;background:var(--accent);border:2px solid var(--bg2)}
 
 /* ── PAGES ── */
-.main-content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
-.page{display:none}.page.on{display:block;animation:fadeIn .2s ease;padding-bottom:72px}
+.main-content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:70px}
+.page{display:none}.page.on{display:block;animation:fadeIn .2s ease;padding-bottom:80px}
 
 /* ── SHARED COMPONENTS ── */
 .wrap{padding:16px}
